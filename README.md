@@ -1,3 +1,10 @@
+# Notice 
+请注意这个项目的默认分支是我阅读的分支, 正常请到origin repo master分支去
+所有的笔记在 todo.txt others.txt 文件中
+
+
+
+
 <a href="https://github.com/TryGhost/Ghost"><img src="https://cloud.githubusercontent.com/assets/120485/18661790/cf942eda-7f17-11e6-9eb6-9c65bfc2abd8.png" alt="Ghost" /></a>
 <a href="https://travis-ci.org/TryGhost/Ghost"><img align="right" src="https://travis-ci.org/TryGhost/Ghost.svg?branch=master" alt="Build status" /></a>
 
