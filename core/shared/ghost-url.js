@@ -54,7 +54,7 @@
             return requestUrl + generateQueryString(queryOptions);
         }
     };
-
+    //:todo, what client_id & clientSecret is ?
     init = function (options) {
         clientId = options.clientId ? options.clientId : '';
         clientSecret = options.clientSecret ? options.clientSecret : '';

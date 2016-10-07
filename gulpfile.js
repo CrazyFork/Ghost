@@ -73,7 +73,7 @@ gitBranches = {
 
 submodule.registerTasks(gulp);
 
-ember = null;
+ember = null;//todo: ?
 
 swallowError = function swallowError(error, log) {
     if (log) {gutil.log(chalk.red(error.toString()));}
@@ -113,6 +113,7 @@ nodemonServerInit = function () {
 // Returns an Object which contains only the valid arguments as well as their value
 // TODO: Make this awesome and reuse it to have options and parameters all over our gulp
 // tooling!
+// create new filterParams based on the paramConfig schema design
 filterParams = function (args) {
     var filteredOptions = {};
 
@@ -174,7 +175,7 @@ checkDirectoryExistance = function (directory) {
 // *****************************************************************************
 
 gulp.task('_admin:build', function () {
-    var env = Object.create(process.env);
+    var env = Object.create(process.env); //bm:
 
     env.CI = false;
 

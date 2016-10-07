@@ -1,5 +1,13 @@
 // Functions to imitate the behavior of Downsize@0.0.5 with 'words: "0"' (heavily based on Downsize)
 
+/**
+
+downsize: https://www.npmjs.com/package/downsize
+
+    downsize("<p>some markup here...</p>",{"words": 2});
+    <p>some markup</p>
+*/
+
 var stack, tagName, tagBuffer, truncatedText, parseState, pointer,
     states = {unitialized: 0, tag_commenced: 1, tag_string: -1, tag_string_single: -2, comment: -3},
     voidElements = ['area', 'base', 'br', 'col', 'command', 'embed', 'hr', 'img', 'input',

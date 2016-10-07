@@ -12,6 +12,7 @@ var parsePackageJson = require('./parse-package-json'),
 
 /**
  * Recursively read directory
+ * return <fold or file name> - < List[folder or filename]> tree
  */
 
 function readDirectory(dir, options) {
@@ -61,7 +62,7 @@ function readDirectory(dir, options) {
             }
 
             if (item.stat.isDirectory()) {
-                return readDirectory(item.path).then(function (files) {
+                return readDirectory(item.path).then(function (files) {//:bm - notice this is a recursive call
                     item.content = files;
 
                     return item;

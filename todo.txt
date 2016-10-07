@@ -1,0 +1,115 @@
+# Notations:
+:bm bookmark
+:todo
+
+# about this file
+这个文件之所以用了类似markdown的语法, 而没有用markdown是为了保持缩进的灵活性
+
+# nodejs
+
+access system env variables:
+system env variables are good place to place custom config database password or other dynamic injected values
+
+
+  >printenv
+  or
+  >process.env
+
+
+node spawn vs exec:
+http://www.hacksparrow.com/difference-between-spawn-and-exec-of-node-js-child_process.html
+
+spawn 返回的是流, 是完全异步的, 你可以 on('data', on('end,
+exec 则是同步的, 会返回一个buffer, 缓存child_process返回的结果, 这个buffer的max size是200kb
+
+
+crypto usage:
+
+  // we can use crypto to create md5 on front-end project.
+  return (crypto.createHash('md5').update(packageInfo.version + Date.now()).digest('hex')).substring(0, 10);
+
+
+handle http request, add request timeout, and cancel request:
+
+@core/server/utils/image-size-from-url.js
+
+nodejs i18n(国际化):
+  Intl.js and Node: https://www.npmjs.com/package/intl
+    Node.js 0.12 has the Intl APIs built-in, but only includes the English locale data by default.
+    If your app needs to support more locales than English, you'll need to get Node to load the
+    extra locale data, or use intl npm package to patch the runtime with the Intl polyfill.
+
+
+
+# This Project
+
+  这个项目应该是分3个模块:
+  * ghost: 面向用户的project
+  * admin:
+  * casper: 主题引擎
+
+
+  ## build process:
+
+    gulp-nodemon
+      Gulp-nodemon looks almost exactly like regular nodemon, but it's made for use with gulp tasks.
+
+    chalk:
+      用于彩色输出的
+
+    gulp-demon:
+      nodemon + livereload 的使用
+
+    jscsrc: 检查代码规范的工作流需要注意下
+
+
+  ## project dependencies
+
+    * bookshelf: orm mapping lib
+    * unidecode: ASCII transliterations of Unicode text
+
+      >unidecode("に間違いがないか、再度確認してください。再読み込みしてください。");
+      >'niJian Wei iganaika, Zai Du Que Ren sitekudasai. Zai Du miIp misitekudasai. '
+    * cheerio: jquery like api to manipulate html
+    * intl-messageformat: 处理i18n format的
+    * intl: ECMA 国际化规范的api实现
+      > In December 2012, ECMA International published the first edition of Standard ECMA-402,
+      better known as the ECMAScript Internationalization API. This specification provides
+      the framework to bring long overdue localization methods to ECMAScript implementations.
+
+  ## notes:
+    * 301 redirect add one year cache.
+      res.set({'Cache-Control': 'public, max-age=' + utils.ONE_YEAR_S});
+      res.redirect(301, path);
+
+    * i18n是如何处理的需要注意下, 主要是i18n.js & translations/en.json 文件
+    * loadash的库看来我还是需要应用下, _.isNull 这个特性挺好的
+    * 这个项目没有应用真正的logger, 用chalk来替代的
+    * readFile = Promise.promisify(fs.readFile);
+      http://bluebirdjs.com/docs/api/promise.promisify.html
+    * zip-folder.js 如何创建zip文件用node
+
+
+
+
+
+
+
+
+
+
+todo:
+  done:
+
+
+  pending:
+    gulpfile vs Gruntfile
+    git submodule
+    what is site map
+    整个项目的目录组成
+    ghost-url.js 是在哪里替换的
+    nodejs Crypto module
+    read ghost-admin project's code
+    http://semver.org/
+    Intl APIs 查阅下
+    clear todos in this project

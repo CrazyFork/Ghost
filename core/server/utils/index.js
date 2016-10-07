@@ -4,7 +4,7 @@ var unidecode  = require('unidecode'),
     getRandomInt;
 
 /**
- * Return a random int, used by `utils.uid()`
+ * Return a random int, used by `utils.uid()`, range from [min, max]
  *
  * @param {Number} min
  * @param {Number} max
@@ -50,7 +50,7 @@ utils = {
 
         return buf.join('');
     },
-    safeString: function (string, options) {
+    safeString: function (string, options) {//:todo, for what use case?`
         options = options || {};
 
         // Handle the £ symbol separately, since it needs to be removed before the unicode conversion.
@@ -94,7 +94,7 @@ utils = {
         }
         return base64String;
     },
-    redirect301: function redirect301(res, path) {
+    redirect301: function redirect301(res, path) {//bm: redirect 301 add one year cache
         /*jslint unparam:true*/
         res.set({'Cache-Control': 'public, max-age=' + utils.ONE_YEAR_S});
         res.redirect(301, path);

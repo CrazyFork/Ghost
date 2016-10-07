@@ -70,6 +70,7 @@ I18n = {
 
         if (_.isNull(matchingString)) {
             console.error('Unable to find matching path [' + msgPath + '] in locale file.\n');
+            //:bm - this kind api implmentation is just bad, caller cant tell if this op success or not
             matchingString = 'i18n error: path "' + msgPath + '" was not found.';
         }
 
@@ -93,7 +94,7 @@ I18n = {
             throw err;
         }
 
-        if (global.Intl) {
+        if (global.Intl) {// more info view https://www.npmjs.com/package/intl, section `intl.js & node`
             // Determine if the built-in `Intl` has the locale data we need.
             var hasBuiltInLocaleData,
                 IntlPolyfill;

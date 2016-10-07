@@ -17,7 +17,7 @@ function readThemes(dir) {
     var originalTree;
 
     return readDirectory(dir)
-        .tap(function (tree) {
+        .tap(function (tree) {//:bm - like `.finally` but is not called for rejections
             originalTree = tree;
         })
         .then(Object.keys)

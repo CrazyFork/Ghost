@@ -11,6 +11,7 @@ var Promise = require('bluebird'),
 /**
  * Parse package.json and validate it has
  * all the required fields
+ * mainly for third party theme package
  */
 
 function parsePackageJson(path) {

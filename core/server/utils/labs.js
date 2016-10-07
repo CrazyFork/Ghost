@@ -1,3 +1,4 @@
+//:todo-what this file used for?
 var config = require('../config'),
     flagIsSet;
 

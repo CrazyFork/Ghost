@@ -54,7 +54,7 @@ module.exports.getImageSizeFromUrl = function getImageSizeFromUrl(imagePath, tim
         requestHandler = imagePath.indexOf('https') === 0 ? https : http;
         options.headers = {'User-Agent': 'Mozilla/5.0'};
 
-        request = requestHandler.get(options, function (res) {
+        request = requestHandler.get(options, function (res) {//:bm - notice how reponse got handled.
             var chunks = [];
 
             res.on('data', function (chunk) {

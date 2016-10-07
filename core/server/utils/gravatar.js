@@ -1,3 +1,6 @@
+/*
+get user image url from gravatar.com
+*/
 var Promise = require('bluebird'),
     config = require('../config'),
     crypto = require('crypto'),

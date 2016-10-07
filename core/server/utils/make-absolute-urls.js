@@ -1,3 +1,4 @@
+//:todo-what for this module
 var cheerio  = require('cheerio'),
     url      = require('url'),
     utils  = require('../utils');
@@ -7,7 +8,7 @@ var cheerio  = require('cheerio'),
  * @param {string} html
  * @param {string} siteUrl (blog URL)
  * @param {string} itemUrl (URL of current context)
- * @returns {object} htmlContent
+ * @returns {object} htmlContent cheerio object
  * @description Takes html, blog url and item url and converts relative url into
  * absolute urls. Returns an object. The html string can be accessed by calling `html()` on
  * the variable that takes the result of this function
