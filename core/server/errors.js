@@ -159,10 +159,8 @@ var errors = {
 };
 
 _.each(errors, function (error) {
-    util.inherits(error, GhostError);
+    util.inherits(error, GhostError);//:bm - typical nodejs inherit pattern.
 });
 
 module.exports = errors;
 module.exports.GhostError = GhostError;
-
-

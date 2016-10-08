@@ -56,7 +56,7 @@ Filters.prototype.deregisterFilter = function (name, priority, fn) {
         this.filterCallbacks[name][priority] = _.without(this.filterCallbacks[name][priority], fn);
     }
 };
-
+// bm:
 // Execute filter functions in priority order
 Filters.prototype.doFilter = function (name, args, context) {
     var callbacks = this.filterCallbacks[name],

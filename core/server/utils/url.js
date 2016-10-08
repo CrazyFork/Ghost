@@ -20,7 +20,7 @@ function getBaseUrl(secure) {
     }
 }
 
-function getSubdir() {
+function getSubdir() {//:todo - ?
     var localPath, subdir;
 
     // Parse local path location
@@ -115,7 +115,7 @@ function createUrl(urlPath, absolute, secure) {
 
 /**
  * creates the url path for a post based on blog timezone and permalink pattern
- *
+ * eg. /:year/:month/ -> /2016/10
  * @param {JSON} post
  * @returns {string}
  */

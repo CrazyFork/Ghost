@@ -15,6 +15,7 @@ exports.isPrivacyDisabled = function isPrivacyDisabled(privacyFlag) {
 
 /**
  * transform all relative paths to absolute paths
+ * 将所有配置文件的paths节点转换成绝对路径
  * @TODO: imagesRelPath is a dirty little attribute (especially when looking at the usages)
  */
 exports.makePathsAbsolute = function makePathsAbsolute(paths, parent) {
@@ -30,7 +31,7 @@ exports.makePathsAbsolute = function makePathsAbsolute(paths, parent) {
             makePathsAbsolute.bind(self)(configValue, parent + ':' + pathsKey);
         } else {
             if (configValue[0] !== '/' && pathsKey !== 'imagesRelPath') {
-                self.set(parent + ':' + pathsKey, path.join(__dirname + '/../../../', configValue));
+                self.set(parent + ':' + pathsKey, path.join(__dirname + '/../../../', configValue));//:bm - can this be replace with process.pwd() ?
             }
         }
     });

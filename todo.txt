@@ -40,6 +40,11 @@ nodejs i18n(国际化):
     extra locale data, or use intl npm package to patch the runtime with the Intl polyfill.
 
 
+nodejs dirs:
+
+  __dirname 当前文件的目录
+  process.cwd() nodejs进程启动的目录 node xx.js 的目录
+
 
 # This Project
 
@@ -76,6 +81,12 @@ nodejs i18n(国际化):
       > In December 2012, ECMA International published the first edition of Standard ECMA-402,
       better known as the ECMAScript Internationalization API. This specification provides
       the framework to bring long overdue localization methods to ECMAScript implementations.
+    * moment-timezone: 处理时区时间转换的
+    * fs-extra: drop replacement for node fs module
+    * nconf : Hierarchical node.js configuration with files, environment variables, command-line arguments, and atomic object merging.
+      用来处理环境变量配置的, 很高级很好的库
+    *
+
 
   ## notes:
     * 301 redirect add one year cache.
@@ -88,7 +99,12 @@ nodejs i18n(国际化):
     * readFile = Promise.promisify(fs.readFile);
       http://bluebirdjs.com/docs/api/promise.promisify.html
     * zip-folder.js 如何创建zip文件用node
-
+    * 时区如何处理的 moment-timezone.
+    * error.js 中典型的nodejs继承模式, 这也就是为什么errors里边的function没有return任何东西的原因
+    * core/server/views/user-error.hbs
+      这个文件的meta tag, 和 asset 指令
+    * core/server/storage/base.js 这个文件生成资源的算法需要看下
+    * localUtils.makePathsAbsolute.bind(nconf);//:bm - mixin pattern @ config module
 
 
 
@@ -104,7 +120,6 @@ todo:
 
   pending:
     gulpfile vs Gruntfile
-    git submodule
     what is site map
     整个项目的目录组成
     ghost-url.js 是在哪里替换的
@@ -113,3 +128,10 @@ todo:
     http://semver.org/
     Intl APIs 查阅下
     clear todos in this project
+    https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS
+    core/server/views/user-error.hbs 文件中的asset 指令是哪来的
+    familiar with fs-extra: https://github.com/jprichardson/node-fs-extra
+    env = process.env.NODE_ENV || 'development'; 这个是如何应用的
+      >  NODE_ENV=production sample.js --foo bar
+
+    git submodule

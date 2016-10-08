@@ -29,7 +29,7 @@ nconf.file('ghost4', __dirname + '/defaults.json');
 /**
  * transform all relative paths to absolute paths
  */
-localUtils.makePathsAbsolute.bind(nconf)();
+localUtils.makePathsAbsolute.bind(nconf)();//:bm - mixin pattern
 
 /**
  * values we have to set manual

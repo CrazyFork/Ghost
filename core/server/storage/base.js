@@ -1,6 +1,7 @@
 var moment = require('moment'),
     path = require('path');
 
+//:bm - hight value module
 function StorageBase() {
     Object.defineProperty(this, 'requiredFns', {
         value: ['exists', 'save', 'serve', 'delete'],
