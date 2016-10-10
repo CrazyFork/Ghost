@@ -3,6 +3,8 @@ var moment = require('moment'),
 
 //:bm - hight value module
 function StorageBase() {
+    // required method, every storage implementation has to implement these methods.
+    // these priliminary conditions will be verified in /storage/index.js
     Object.defineProperty(this, 'requiredFns', {
         value: ['exists', 'save', 'serve', 'delete'],
         writable: false

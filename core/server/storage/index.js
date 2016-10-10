@@ -11,7 +11,7 @@ function getStorage(type) {
     type = type || 'images';
 
     var storageChoice = config.get('storage').active[type],
-        storageConfig;
+        storageConfig;//对应storage,new 出来的时候的参数, 比如local-file-storage, new LocalFileStore(options) 中的参数
 
     // CASE: we only allow local-file-storage for themes
     // @TODO: https://github.com/TryGhost/Ghost/issues/7246
@@ -33,6 +33,7 @@ function getStorage(type) {
         return storage[storageChoice];
     }
 
+    // 这部分是试着去load storage strategy的实现, 按不同目录的优先级去load. 默认的实现是local-file-store.js
     // CASE: load adapter from custom path  (.../content/storage)
     try {
         storage[storageChoice] = require(config.getContentPath('storage') + storageChoice);

@@ -20,7 +20,7 @@ function getBaseUrl(secure) {
     }
 }
 
-function getSubdir() {//:todo - ?
+function getSubdir() {//return the path segment of url in the config file, with last / trimed.
     var localPath, subdir;
 
     // Parse local path location
