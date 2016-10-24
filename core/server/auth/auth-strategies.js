@@ -1,3 +1,6 @@
+/*
+this module implemented some passport authenticate strategies
+*/
 var models = require('../models'),
     utils = require('../utils'),
     i18n = require('../i18n'),
@@ -17,7 +20,7 @@ strategies = {
      * Use of the client password strategy is implemented to support ember-simple-auth.
      */
     clientPasswordStrategy: function clientPasswordStrategy(clientId, clientSecret, done) {
-        return models.Client.findOne({slug: clientId}, {withRelated: ['trustedDomains']})
+        return models.Client.findOne({slug: clientId}, {withRelated: ['trustedDomains']})//:todo - withRelated?
             .then(function then(model) {
                 if (model) {
                     var client = model.toJSON({include: ['trustedDomains']});
@@ -30,7 +33,7 @@ strategies = {
     },
 
     /**
-     * BearerStrategy
+     * BearerStrategy - auth by `bearer token`
      *
      * This strategy is used to authenticate users based on an access token (aka a
      * bearer token).  The user must have previously authorized a client
@@ -48,7 +51,7 @@ strategies = {
                                 if (model) {
                                     var user = model.toJSON(),
                                         info = {scope: '*'};
-                                    return done(null, {id: user.id}, info);
+                                    return done(null, {id: user.id}, info);//:todo - what info does?
                                 }
                                 return done(null, false);
                             });
@@ -72,12 +75,12 @@ strategies = {
      *
      * @TODO: validate GhostAuth profile?
      */
-    ghostStrategy: function ghostStrategy(req, ghostAuthAccessToken, ghostAuthRefreshToken, profile, done) {
+    ghostStrategy: function ghostStrategy(req, ghostAuthAccessToken, ghostAuthRefreshToken, profile, done) {//:todo - what the heck is this
         var inviteToken = req.body.inviteToken,
             options = {context: {internal: true}},
             handleInviteToken, handleSetup;
 
-        handleInviteToken = function handleInviteToken() {
+        handleInviteToken = function handleInviteToken() {// create a new user with invited token
             var user, invite;
             inviteToken = utils.decodeBase64URLsafe(inviteToken);
 
@@ -97,7 +100,7 @@ strategies = {
                         email: profile.email_address,
                         name: profile.email_address,
                         password: utils.uid(50),
-                        roles: invite.toJSON().roles
+                        roles: invite.toJSON().roles//:todo - what this does?
                     }, options);
                 })
                 .then(function destroyInvite(_user) {
@@ -109,8 +112,8 @@ strategies = {
                 });
         };
 
-        handleSetup = function handleSetup() {
-            return models.User.findOne({slug: 'ghost-owner', status: 'all'}, options)
+        handleSetup = function handleSetup() {// update user info with options
+            return models.User.findOne({slug: 'ghost-owner', status: 'all'}, options)//:todo - what is this slug guy?
                 .then(function fetchedOwner(owner) {
                     if (!owner) {
                         throw new errors.NotFoundError({message: i18n.t('errors.models.user.userNotFound')});

@@ -3,7 +3,7 @@ var _ = require('lodash'),
     moment = require('moment'),
     Stream = require('stream').Stream,
     util = require('util'),
-    format = util.format,
+    format = util.format, //nodejs's util module
     prettyjson = require('prettyjson'),
     __private__ = {
         levelFromName: {
@@ -39,7 +39,7 @@ var _ = require('lodash'),
         }
     };
 
-
+// 这个模块将data格式化颜色/格式后(按照terminal的格式)输出
 function PrettyStream() {
 }
 util.inherits(PrettyStream, Stream);

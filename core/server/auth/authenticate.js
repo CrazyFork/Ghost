@@ -1,10 +1,15 @@
+/*
+这个模块从3种方式验证用户登录权限
+
+:todo - authenticateUser vs authenticateClient 的区别?
+*/
 var passport = require('passport'),
     errors = require('../errors'),
     events = require('../events'),
     i18n = require('../i18n'),
     authenticate;
 
-function isBearerAutorizationHeader(req) {
+function isBearerAutorizationHeader(req) {// Authorization: Bearer AbCdEf123456
     var parts,
         scheme,
         credentials;
@@ -71,7 +76,7 @@ authenticate = {
 
                 req.client = client;
 
-                events.emit('client.authenticated', client);
+                events.emit('client.authenticated', client);//:todo - why use event emiter here?
                 return next(null, client);
             }
         )(req, res, next);
@@ -79,6 +84,8 @@ authenticate = {
 
     // ### Authenticate User Middleware
     authenticateUser: function authenticateUser(req, res, next) {
+        //:todo - `{session: false, failWithError: false}` what this options is ?
+        // is this options related to passport project ?
         return passport.authenticate('bearer', {session: false, failWithError: false},
             function authenticate(err, user, info) {
                 if (err) {
@@ -95,7 +102,7 @@ authenticate = {
                     return next(new errors.UnauthorizedError({
                         message: i18n.t('errors.middleware.auth.accessDenied')
                     }));
-                } else if (req.client) {
+                } else if (req.client) {//:todo - why this?
                     req.user = {id: 0};
                     return next();
                 }

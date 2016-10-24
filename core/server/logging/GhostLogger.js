@@ -53,7 +53,7 @@ GhostLogger.prototype.setSerializers = function setSerializers() {
         }
     };
 };
-
+// so you can call ghostLogger.log.info(), debug(), warn() etc...
 GhostLogger.prototype.setLoggers = function setLoggers() {
     var self = this;
 
@@ -144,10 +144,10 @@ GhostLogger.prototype.setStreams = function setStreams() {
     _.each(streams, function (stream) {
         self.loggers[stream.name] = {
             name: stream.name,
-            log: bunyan.createLogger({
+            log: bunyan.createLogger({ //:bm - using bunyan to create a logger
                 name: 'Log',
                 streams: [stream.stream],
-                serializers: self.serializers
+                serializers: self.serializers//:todo - bunyan serializers
             })
         };
     });
@@ -168,7 +168,7 @@ GhostLogger.prototype.removeSensitiveData = function removeSensitiveData(obj) {
 GhostLogger.prototype.info = function info() {
     var print = '';
 
-    _.each(arguments, function (value) {
+    _.each(arguments, function (value) {// replace with util.format ?
         print += value;
         print += ' ';
     });

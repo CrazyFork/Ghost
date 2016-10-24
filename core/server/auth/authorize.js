@@ -1,3 +1,6 @@
+/*
+this module provide middleware that rout to next only pre-condition meets or fail.
+*/
 var errors = require('../errors'),
     labs = require('../utils/labs'),
     i18n = require('../i18n'),

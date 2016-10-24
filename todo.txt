@@ -1,6 +1,12 @@
 # Notations:
-:bm bookmark
-:todo
+
+  # inside src code:
+  :bm           #bookmark
+  :todo
+
+  # this doc
+  !             #high value
+
 
 # about this file
 这个文件之所以用了类似markdown的语法, 而没有用markdown是为了保持缩进的灵活性
@@ -69,6 +75,8 @@ nodejs dirs:
     jscsrc: 检查代码规范的工作流需要注意下
 
 
+
+
   ## project dependencies
 
     * bookshelf: orm mapping lib
@@ -86,7 +94,37 @@ nodejs dirs:
     * fs-extra: drop replacement for node fs module
     * nconf : Hierarchical node.js configuration with files, environment variables, command-line arguments, and atomic object merging.
       用来处理环境变量配置的, 很高级很好的库
-    *
+    * passport - 验证用户权限信息的通用库
+      * [passport-oauth2] - passport oauth2实现 - 窝草, 难道要把这个项目先看了 :(
+        这个货是用来这个blog项目调用google，facebook其他项目的oauth2的封装, 获取这些服务的第三方用户信息
+        https://github.com/jaredhanson/passport-oauth2
+
+      * passport-ghost: 这个项目的自定义passport strategy实现
+
+    * prettyjson: 格式化json格式, 转换成类似yaml格式的
+    * bunyan: nodejs logger
+    * oauth2orize - https://github.com/CrazyFork/oauth2orize, 服务端创建oauth2流程的帮助库
+
+
+
+
+
+  ## Passport:
+
+    ! coer/server/auth/* passport的使用 & 实现oauth:
+      * auth-strategies.js - 定义了不同的strategy, 参数从哪传入的？
+      * authenticate.js - 定义了不同的express设计权限校验的中间件(middleware)
+        //oauth2-client-password 这里将 auth-strategies.js 定义的键值对进行了转换
+        return passport.authenticate(['oauth2-client-password'], {session: false, failWithError: false},
+
+  ## Logging:
+
+    core/server/logging + bunyan 实现了一个file, rotating-file, stdout 3种模式的logger，在logging request, response
+    的时候移除了http header中的敏感信息
+
+
+
+
 
 
   ## notes:
@@ -104,20 +142,46 @@ nodejs dirs:
     * error.js 中典型的nodejs继承模式, 这也就是为什么errors里边的function没有return任何东西的原因
     * core/server/views/user-error.hbs
       这个文件的meta tag, 和 asset 指令
-    * core/server/storage/* 这个文件生成资源的算法需要看下, 这个很经典！
+    * ! core/server/storage/* 这个文件生成资源的算法需要看下, 这个很经典！
     * localUtils.makePathsAbsolute.bind(nconf);//:bm - mixin pattern @ config module
+    * Bearer token : `Authorization: Bearer AbCdEf123456`
+    * ! core/server/auth/* 这个模块需要重点看下, 用户验证授权, oauth2 使用和实现, password模块的整合。
 
 
 
 
 
+# others:
+
+  # [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS)
+
+    cors 主要解决xhr跨域调用的问题, 第三方主机如果允许跨域, 必须设置相应的cors header.
+    cors 的方式有三种:
+      * Simple requests: 简单调用第三方服务
+      * Preflighted requests: 先发一个试探性的请求看第三方服务是否允许跨域
+      * Requests with credentials: 带cookie的第三方服务调用
+
+
+
+
+# Links:
+* [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS)
+* ! [an-introduction-to-oauth-2](https://www.digitalocean.com/community/tutorials/an-introduction-to-oauth-2)
 
 
 
 
 todo:
   done:
-    [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS)
+    [outh2的流程](https://www.digitalocean.com/community/tutorials/an-introduction-to-oauth-2):
+      大致流程如下:
+        * 使用oauth2首先你的app需要在目标api(qq, facebook...)服务中注册, 填写appId, callbackuri, rejecturi...
+        * 然后你的app会获得clientId, client credential
+        * 然后你请求第三方token的url, 带上你的clientId, client credential, scope(限定你获取用户信息的范围),
+          grant_type(oauth大致的有4种类型)
+        * 这步如果成功, web client(通常是浏览器), 会redirect你注册的url并带上access token信息
+        * 然后你通过获得的 Bearer token 来请求第三方服务, 获取用户基本信息, 朋友列表...etc
+
 
 
   pending:
@@ -135,6 +199,18 @@ todo:
     familiar with fs-extra: https://github.com/jprichardson/node-fs-extra
     env = process.env.NODE_ENV || 'development'; 这个是如何应用的
       >  NODE_ENV=production sample.js --foo bar
-
     git submodule
     整理下这个项目的代码到github blog上， 应用的模式呀 等等， 这个放到最后处理
+    orm mapping - bookshelf
+    ghost 3rd api - http://api.ghost.org/docs/parameters
+    review core/server/auth folder
+    https://github.com/CrazyFork/passport-oauth2
+    nodejs util module
+    bunyan
+
+    https://github.com/CrazyFork/oauth2orize - 这个源码等着读了
+
+    把todo中的rxjs视频教程清了, 以后所有的Promise都替换成RxJS？
+    authenicate 中的逻辑需要好好看下, authenticate user/client 的区别是什么？需要画脑图？
+    core/server/auth/passport.js 这个需要重新看下到时候
+    

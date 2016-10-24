@@ -1,3 +1,8 @@
+/*
+this module implemented oauth2 for 3rd party to use,
+in order to fully understand this module, please read this first:
+https://www.digitalocean.com/community/tutorials/an-introduction-to-oauth-2
+*/
 var oauth2orize = require('oauth2orize'),
     models = require('../models'),
     utils = require('../utils'),
@@ -19,7 +24,7 @@ function exchangeRefreshToken(client, refreshToken, scope, done) {
                     accessExpires = Date.now() + utils.ONE_HOUR_MS,
                     refreshExpires = Date.now() + utils.ONE_WEEK_MS;
 
-                if (token.expires > Date.now()) {
+                if (token.expires > Date.now()) {//expand expire time when access continuously within specified interval time
                     models.Accesstoken.add({
                         token: accessToken,
                         user_id: token.user_id,
@@ -50,10 +55,10 @@ function exchangePassword(client, username, password, scope, done) {
             // Validate the user
             return models.User.check({email: username, password: password})
                 .then(function then(user) {
-                    return authenticationAPI.createTokens({}, {context: {client_id: client.id, user: user.id}});
+                    return authenticationAPI.createTokens({}, {context: {client_id: client.id, user: user.id}});//:todo
                 })
                 .then(function then(response) {
-                    spamPrevention.resetCounter(username);
+                    spamPrevention.resetCounter(username);//:todo
                     return done(null, response.access_token, response.refresh_token, {expires_in: response.expires_in});
                 });
         })

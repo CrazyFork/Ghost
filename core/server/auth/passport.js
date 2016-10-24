@@ -1,6 +1,6 @@
-var ClientPasswordStrategy = require('passport-oauth2-client-password').Strategy,
-    BearerStrategy = require('passport-http-bearer').Strategy,
-    GhostOAuth2Strategy = require('passport-ghost').Strategy,
+var ClientPasswordStrategy = require('passport-oauth2-client-password').Strategy,//:todo-
+    BearerStrategy = require('passport-http-bearer').Strategy,//:todo-
+    GhostOAuth2Strategy = require('passport-ghost').Strategy,//:todo-
     passport = require('passport'),
     Promise = require('bluebird'),
     authStrategies = require('./auth-strategies'),
@@ -76,8 +76,8 @@ _private.registerClient = function registerClient(options) {
 };
 
 exports.init = function initPassport(options) {
-    var type = options.type,
-        url = options.url;
+    var type = options.type,//:todo-
+        url = options.url;//:todo-
 
     return new Promise(function (resolve, reject) {
         passport.use(new ClientPasswordStrategy(authStrategies.clientPasswordStrategy));
