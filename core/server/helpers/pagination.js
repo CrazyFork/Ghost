@@ -37,7 +37,7 @@ pagination = function (options) {
 
     var data = _.merge({}, this.pagination);
 
-    return template.execute('pagination', data, options);
+    return template.execute('pagination', data, options);//:bm - pagination template inside .tpl folder
 };
 
 module.exports = pagination;

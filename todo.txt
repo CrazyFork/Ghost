@@ -13,44 +13,49 @@
 
 # nodejs
 
-access system env variables:
-system env variables are good place to place custom config database password or other dynamic injected values
+  access system env variables:
+  system env variables are good place to place custom config database password or other dynamic injected values
 
 
-  >printenv
-  or
-  >process.env
+    >printenv
+    or
+    >process.env
 
 
-node spawn vs exec:
-http://www.hacksparrow.com/difference-between-spawn-and-exec-of-node-js-child_process.html
+  node spawn vs exec:
+  http://www.hacksparrow.com/difference-between-spawn-and-exec-of-node-js-child_process.html
 
-spawn 返回的是流, 是完全异步的, 你可以 on('data', on('end,
-exec 则是同步的, 会返回一个buffer, 缓存child_process返回的结果, 这个buffer的max size是200kb
-
-
-crypto usage:
-
-  // we can use crypto to create md5 on front-end project.
-  return (crypto.createHash('md5').update(packageInfo.version + Date.now()).digest('hex')).substring(0, 10);
+  spawn 返回的是流, 是完全异步的, 你可以 on('data', on('end,
+  exec 则是同步的, 会返回一个buffer, 缓存child_process返回的结果, 这个buffer的max size是200kb
 
 
-handle http request, add request timeout, and cancel request:
+  crypto usage:
 
-@core/server/utils/image-size-from-url.js
-
-nodejs i18n(国际化):
-  Intl.js and Node: https://www.npmjs.com/package/intl
-    Node.js 0.12 has the Intl APIs built-in, but only includes the English locale data by default.
-    If your app needs to support more locales than English, you'll need to get Node to load the
-    extra locale data, or use intl npm package to patch the runtime with the Intl polyfill.
+    // we can use crypto to create md5 on front-end project.
+    return (crypto.createHash('md5').update(packageInfo.version + Date.now()).digest('hex')).substring(0, 10);
 
 
-nodejs dirs:
+  handle http request, add request timeout, and cancel request:
 
-  __dirname 当前文件的目录
-  process.cwd() nodejs进程启动的目录 node xx.js 的目录
-  path.join(os.tmpdir(), utils.uid(10)) // create a temp dir
+  @core/server/utils/image-size-from-url.js
+
+  nodejs i18n(国际化):
+    Intl.js and Node: https://www.npmjs.com/package/intl
+      Node.js 0.12 has the Intl APIs built-in, but only includes the English locale data by default.
+      If your app needs to support more locales than English, you'll need to get Node to load the
+      extra locale data, or use intl npm package to patch the runtime with the Intl polyfill.
+
+
+  nodejs dirs:
+
+    __dirname 当前文件的目录
+    process.cwd() nodejs进程启动的目录 node xx.js 的目录
+    path.join(os.tmpdir(), utils.uid(10)) // create a temp dir
+
+
+# javascript:
+  Snippets:
+    path = path.replace(/\.([^\.]*)$/, '.min.$1');
 
 
 # This Project
@@ -60,6 +65,66 @@ nodejs dirs:
   * admin:
   * casper: 主题引擎
 
+  ## Directories:
+    ├── api
+    ├── apps
+    │   ├── amp
+    │   │   ├── lib
+    │   │   │   ├── helpers
+    │   │   │   └── views
+    │   │   └── tests
+    │   ├── private-blogging
+    │   │   ├── lib
+    │   │   │   ├── helpers
+    │   │   │   └── views
+    │   │   └── tests
+    │   └── subscribers
+    │       └── lib
+    │           ├── helpers
+    │           └── views
+    ├── auth                            # auth related, including oauth2
+    ├── config                          # config related
+    │   └── env
+    ├── controllers
+    │   └── frontend
+    ├── data
+    │   ├── db
+    │   ├── export
+    │   ├── import
+    │   ├── importer
+    │   │   ├── handlers
+    │   │   └── importers
+    │   ├── meta
+    │   ├── migration
+    │   │   └── fixtures
+    │   ├── schema
+    │   │   └── clients
+    │   ├── slack
+    │   ├── validation
+    │   └── xml
+    │       ├── rss
+    │       └── sitemap
+    ├── events                            # a EventEmiter helper class
+    ├── helpers                           # handlebars helpers, for me, provides no values to read this, i use no server-side rendering, or with another lib to do this (eg. reactjs)
+    │   └── tpl                           # handlebars templates, gernate pagination etc...
+    ├── logging                           # server side logging
+    ├── mail
+    │   └── templates
+    │       └── raw
+    ├── middleware
+    │   ├── api
+    │   └── validation
+    ├── models
+    │   ├── base
+    │   └── plugins
+    ├── permissions
+    ├── routes
+    ├── scheduling
+    │   └── post-scheduling
+    ├── storage
+    ├── translations
+    ├── utils
+    └── views
 
   ## build process:
 
@@ -104,6 +169,7 @@ nodejs dirs:
     * prettyjson: 格式化json格式, 转换成类似yaml格式的
     * bunyan: nodejs logger
     * oauth2orize - https://github.com/CrazyFork/oauth2orize, 服务端创建oauth2流程的帮助库
+    * jsonpath - https://github.com/flitbit/json-path, query json with xpath like syntax.
 
 
 
@@ -146,7 +212,7 @@ nodejs dirs:
     * localUtils.makePathsAbsolute.bind(nconf);//:bm - mixin pattern @ config module
     * Bearer token : `Authorization: Bearer AbCdEf123456`
     * ! core/server/auth/* 这个模块需要重点看下, 用户验证授权, oauth2 使用和实现, password模块的整合。
-
+    * core/server/helpers/* 这个模块需要先看下handlebars的helpers的概念和语法, 现在就大致略过一遍就好
 
 
 
@@ -206,11 +272,11 @@ todo:
     review core/server/auth folder
     https://github.com/CrazyFork/passport-oauth2
     nodejs util module
-    bunyan
+    bunyan 在项目中如何创建logger的
 
     https://github.com/CrazyFork/oauth2orize - 这个源码等着读了
 
     把todo中的rxjs视频教程清了, 以后所有的Promise都替换成RxJS？
     authenicate 中的逻辑需要好好看下, authenticate user/client 的区别是什么？需要画脑图？
     core/server/auth/passport.js 这个需要重新看下到时候
-    
+    generate a folder tree view

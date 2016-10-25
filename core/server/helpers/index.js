@@ -1,3 +1,6 @@
+/*
+这个模块好像就是为了给用作服务端渲染的handlebar创建指令
+*/
 var hbs = require('express-hbs'),
     Promise = require('bluebird'),
     errors = require('../errors'),

@@ -1,3 +1,4 @@
+// return asset url with random hash append to it (in order to disable browser cache).
 var config = require('../../config'),
     utils = require('../../utils');
 
