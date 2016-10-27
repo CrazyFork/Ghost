@@ -1,3 +1,6 @@
+/*
+defines some rules for loading specific SchedulingBase implemenation
+*/
 var _ = require('lodash'),
     Promise = require('bluebird'),
     SchedulingBase = require(__dirname + '/SchedulingBase'),

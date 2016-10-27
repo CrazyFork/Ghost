@@ -1,3 +1,6 @@
+/*
+scheduling url request (maybe some server api endpoints)
+*/
 var util = require('util'),
     moment = require('moment'),
     request = require('superagent'),
@@ -111,7 +114,7 @@ SchedulingDefault.prototype._addJob = function (object) {
     this.allJobs = sortedJobs;
 };
 
-SchedulingDefault.prototype._deleteJob = function (object) {
+SchedulingDefault.prototype._deleteJob = function (object) {//delete operation is handled in execute method
     if (!object.time) {
         return;
     }
@@ -138,7 +141,7 @@ SchedulingDefault.prototype._execute = function (jobs) {
         var timeout = null,
             diff = moment(Number(timestamp)).diff(moment());
 
-        // awake a little before
+        // awake a little before, 200ms
         timeout = setTimeout(function () {
             clearTimeout(timeout);
 

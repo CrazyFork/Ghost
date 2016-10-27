@@ -1,4 +1,7 @@
-var _ = require('lodash').runInContext(),
+/*
+this module is helper util for generate content from ./templates/ folder
+*/
+var _ = require('lodash').runInContext(),// :todo - 创建一个干净的loadash对象？因为下边更改了lodash模板全局设置
     fs = require('fs'),
     Promise = require('bluebird'),
     path = require('path'),
@@ -6,7 +9,7 @@ var _ = require('lodash').runInContext(),
     config = require('../config'),
     templatesDir = path.resolve(__dirname, '..', 'mail', 'templates');
 
-_.templateSettings.interpolate = /{{([\s\S]+?)}}/g;
+_.templateSettings.interpolate = /{{([\s\S]+?)}}/g; // change lodash template settings
 
 exports.generateContent = function generateContent(options) {
     var defaults,
