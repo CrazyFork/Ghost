@@ -88,7 +88,7 @@ Invite = ghostBookshelf.Model.extend({
         // @TODO: call a util fn?
         hash.update(String(data.expires));
         hash.update(data.email.toLocaleLowerCase());
-        text += [data.expires, data.email, hash.digest('base64')].join('|');
+        text += [data.expires, data.email, hash.digest('base64')].join('|');//:bm: create a invite hash
         data.token = new Buffer(text).toString('base64');
 
         delete data.roles;

@@ -35,7 +35,7 @@ models = [
 function init() {
     exports.Base = require('./base');
 
-    models.forEach(function (name) {
+    models.forEach(function (name) {// dynamically inject all modules
         _.extend(exports, require('./' + name));
     });
 }

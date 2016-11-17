@@ -13,7 +13,7 @@ AppField = ghostBookshelf.Model.extend({
 AppFields = ghostBookshelf.Collection.extend({
     model: AppField
 });
-
+//:bm: extends both Model & collection
 module.exports = {
     AppField: ghostBookshelf.model('AppField', AppField),
     AppFields: ghostBookshelf.collection('AppFields', AppFields)

@@ -1,5 +1,5 @@
 /**
- * # Utils
+ * # Utils - for tags & posts
  * Parts of the model code which can be split out and unit tested
  */
 var _ = require('lodash'),
@@ -21,7 +21,7 @@ tagUpdate = {
     detachTagFromPost: function detachTagFromPost(post, tag, options) {
         return function () {
             // See tgriesser/bookshelf#294 for an explanation of _.omit(options, 'query')
-            return post.tags().detach(tag.id, _.omit(options, 'query'));
+            return post.tags().detach(tag.id, _.omit(options, 'query'));//:todo: - detach ?
         };
     },
 

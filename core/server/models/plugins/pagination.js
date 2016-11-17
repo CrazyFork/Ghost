@@ -58,7 +58,7 @@ paginationUtils = {
 
     /**
      * ### Format Response
-     * Takes the no. items returned and original options and calculates all of the pagination meta data
+     * Takes the number items returned and original options and calculates all of the pagination meta data
      * @param {Number} totalItems
      * @param {options} options
      * @returns {pagination} pagination metadata
@@ -68,7 +68,7 @@ paginationUtils = {
             pagination = {
                 page:  options.page || defaults.page,
                 limit: options.limit,
-                pages: calcPages === 0 ? 1 : calcPages,
+                pages: calcPages === 0 ? 1 : calcPages,//force 0 page to 1
                 total: totalItems,
                 next:  null,
                 prev:  null
@@ -192,6 +192,7 @@ pagination = function pagination(bookshelf) {
                     .then(function (fetchResult) {
                         return {
                             collection: fetchResult,
+                            // countResult[0].aggregate, `aggregate` comes from countPromise sql
                             pagination: paginationUtils.formatResponse(countResult[0] ? countResult[0].aggregate : 0, options)
                         };
                     });

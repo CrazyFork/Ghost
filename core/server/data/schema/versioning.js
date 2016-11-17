@@ -1,3 +1,4 @@
+// provide utility methods for migrate db
 var path = require('path'),
     Promise = require('bluebird'),
     db = require('../db'),

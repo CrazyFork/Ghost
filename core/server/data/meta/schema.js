@@ -1,3 +1,9 @@
+/*
+this module create a Microdata type of schema.org, which is use for webmaster(crawler) like google
+, bing etc to better understand the information of your applicaiton.
+this module created a JSON-LD type Microdata.
+about JSON-LD: https://en.wikipedia.org/wiki/JSON-LD
+*/
 var config = require('../../config'),
     hbs = require('express-hbs'),
     socialUrls = require('../../utils/social-urls'),

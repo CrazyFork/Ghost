@@ -91,6 +91,7 @@ validateSchema = function validateSchema(tableName, model) {
 
             // check validations objects
             if (schema[tableName][columnKey].hasOwnProperty('validations')) {
+                //why overwrite validationErrors here
                 validationErrors = validationErrors.concat(validate(strVal, columnKey, schema[tableName][columnKey].validations));
             }
 
@@ -168,7 +169,7 @@ validateActiveTheme = function validateActiveTheme(themeName) {
 //                                      // not null.
 //
 // available validators: https://github.com/chriso/validator.js#validators
-validate = function validate(value, key, validations) {
+validate = function validate(value, key, validations) {// bm: important method, only used for string?
     var validationErrors = [];
     value = _.toString(value);
 

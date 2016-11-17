@@ -14,6 +14,7 @@ var Settings,
 // For neatness, the defaults file is split into categories.
 // It's much easier for us to work with it as a single level
 // instead of iterating those categories every time
+// flat ../data/schema/default-settings.json to a single level map[settingName, Setting{type, key, defaultValue}]
 function parseDefaultSettings() {
     var defaultSettingsInCategories = require('../data/schema/').defaultSettings,
         defaultSettingsFlattened = {};
@@ -60,7 +61,7 @@ Settings = ghostBookshelf.Model.extend({
 
         this.on('created', function (model) {
             model.emitChange('added');
-            model.emitChange(model.attributes.key + '.' + 'added');
+            model.emitChange(model.attributes.key + '.' + 'added');//:todo: model.attributes
         });
         this.on('updated', function (model) {
             model.emitChange('edited');
@@ -99,7 +100,7 @@ Settings = ghostBookshelf.Model.extend({
             data = {key: data};
         }
 
-        return Promise.resolve(ghostBookshelf.Model.findOne.call(this, data, options));
+        return Promise.resolve(ghostBookshelf.Model.findOne.call(this, data, options));//:todo: what is `this` ref to ?
     },
 
     edit: function (data, options) {

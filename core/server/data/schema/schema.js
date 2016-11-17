@@ -1,10 +1,14 @@
+/*
+:todo:
+    why every table schema has a uuid field?
+*/
 module.exports = {
     posts: {
         id: {type: 'increments', nullable: false, primary: true},
-        uuid: {type: 'string', maxlength: 36, nullable: false, validations: {isUUID: true}},
+        uuid: {type: 'string', maxlength: 36, nullable: false, validations: {isUUID: true}},//:todo - where is this validations used
         title: {type: 'string', maxlength: 150, nullable: false},
         slug: {type: 'string', maxlength: 150, nullable: false, unique: true},
-        markdown: {type: 'text', maxlength: 16777215, fieldtype: 'medium', nullable: true},
+        markdown: {type: 'text', maxlength: 16777215, fieldtype: 'medium', nullable: true},//:todo: maxlength?
         mobiledoc: {type: 'text', maxlength: 1000000000, fieldtype: 'long', nullable: true},
         html: {type: 'text', maxlength: 16777215, fieldtype: 'medium', nullable: true},
         amp: {type: 'text', maxlength: 16777215, fieldtype: 'medium', nullable: true},
@@ -26,7 +30,7 @@ module.exports = {
     },
     users: {
         id: {type: 'increments', nullable: false, primary: true},
-        uuid: {type: 'string', maxlength: 36, nullable: false, validations: {isUUID: true}},
+        uuid: {type: 'string', maxlength: 36, nullable: false, validations: {isUUID: true}},//bm: validaiton is handle in ../validation module
         name: {type: 'string', maxlength: 150, nullable: false},
         slug: {type: 'string', maxlength: 150, nullable: false, unique: true},
         ghost_auth_access_token: {type: 'string', nullable: true},

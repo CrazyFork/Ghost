@@ -1,20 +1,21 @@
 # Notations:
 
   # inside src code:
-  :bm           #bookmark
-  :todo
+  :bm                   #bookmark
+  :todo | :todo:
+  :                     # comment by myself
 
   # this doc
   !             #high value
-
+  ?             #todo
 
 # about this file
 这个文件之所以用了类似markdown的语法, 而没有用markdown是为了保持缩进的灵活性
 
 # nodejs
 
-  access system env variables:
-  system env variables are good place to place custom config database password or other dynamic injected values
+  * access system env variables:
+    system env variables are good place to place custom config database password or other dynamic injected values
 
 
     >printenv
@@ -22,40 +23,180 @@
     >process.env
 
 
-  node spawn vs exec:
-  http://www.hacksparrow.com/difference-between-spawn-and-exec-of-node-js-child_process.html
+  * node spawn vs exec:
+    http://www.hacksparrow.com/difference-between-spawn-and-exec-of-node-js-child_process.html
 
-  spawn 返回的是流, 是完全异步的, 你可以 on('data', on('end,
-  exec 则是同步的, 会返回一个buffer, 缓存child_process返回的结果, 这个buffer的max size是200kb
+    spawn 返回的是流, 是完全异步的, 你可以 on('data', on('end,
+    exec 则是同步的, 会返回一个buffer, 缓存child_process返回的结果, 这个buffer的max size是200kb
 
 
-  crypto usage:
+  * crypto usage:
 
     // we can use crypto to create md5 on front-end project.
     return (crypto.createHash('md5').update(packageInfo.version + Date.now()).digest('hex')).substring(0, 10);
 
 
-  handle http request, add request timeout, and cancel request:
+  * handle http request, add request timeout, and cancel request:
 
   @core/server/utils/image-size-from-url.js
 
-  nodejs i18n(国际化):
+  * nodejs i18n(国际化):
     Intl.js and Node: https://www.npmjs.com/package/intl
       Node.js 0.12 has the Intl APIs built-in, but only includes the English locale data by default.
       If your app needs to support more locales than English, you'll need to get Node to load the
       extra locale data, or use intl npm package to patch the runtime with the Intl polyfill.
 
 
-  nodejs dirs:
+  * nodejs dirs:
 
     __dirname 当前文件的目录
     process.cwd() nodejs进程启动的目录 node xx.js 的目录
     path.join(os.tmpdir(), utils.uid(10)) // create a temp dir
 
+  * dynamically load external module using `require`:
+
+    require(path.join(relPath, version))
+
+  *
+
 
 # javascript:
   Snippets:
     path = path.replace(/\.([^\.]*)$/, '.min.$1');
+
+
+# database:
+  * [mysql data types](https://www.tutorialspoint.com/mysql/mysql-data-types.htm)
+
+  ## SQL:
+    * outerJoin innerJoin leftOuterJoin fullJoin ...
+      http://stackoverflow.com/questions/448023/what-is-the-difference-between-left-right-outer-and-inner-joins
+      full join:
+        The SQL FULL JOIN combines the results of both left and right outer joins.
+        https://www.tutorialspoint.com/sql/sql-full-joins.htm
+
+    * mysql default join:
+      http://stackoverflow.com/questions/4418776/what-is-the-default-mysql-join-behaviour-inner-or-outer
+      In MySQL writing JOIN unqualified implies INNER JOIN.
+
+    * with rollup:
+      http://blog.sqlauthority.com/2010/02/24/sql-server-introduction-to-rollup-clause/
+      简单说就是根据3个字段的group by, 会在不同的条件有个总计的一类数据计算出来, 程序应该不会这么用, mysql console 这么用估计还有可能
+
+    * union vs union all:
+      union 会根据内容去重, union all 不会
+      http://stackoverflow.com/questions/49925/what-is-the-difference-between-union-and-union-all
+
+    * select for update / share mode:
+      http://dev.mysql.com/doc/refman/5.7/en/innodb-locking-reads.html
+      the diff between `for update` and `share mode` is,
+        * `for update` do a exclusive lock on read
+        * `share mode` on the other hand, share read (you cant modify it).
+
+    * character set & collation
+      http://stackoverflow.com/questions/341273/what-does-character-set-and-collation-mean-exactly
+      * character set - using which encoding
+      * collation -  how to sort characters
+
+    * SQL default:
+      http://www.w3schools.com/Sql/sql_default.asp
+      mysql default - see books
+        insert into `coords` (`x`, `y`) values (20, DEFAULT), (DEFAULT, 30), (10, 20)
+
+    * where exists:
+      https://www.techonthenet.com/sql/exists.php
+      >The subquery is a SELECT statement. If the subquery returns at least one record in its result set,
+      the EXISTS clause will evaluate to true and the EXISTS condition will be met. If the subquery
+      does not return any records, the EXISTS clause will evaluate to false and the EXISTS condition will
+      not be met.
+
+    * prefer to store only GMT/UTC timestamp to database:
+      https://www.periscopedata.com/blog/better-sql-schema.html
+
+    * create schema with uuid is good for replicate data, generally it's good idea to include a
+      uuid in your database.
+      http://stackoverflow.com/questions/45399/advantages-and-disadvantages-of-guid-uuid-database-keys
+
+  ### knex
+    Query Builder:
+      * returning — .returning(column) / .returning([column1, column2, ...])
+        插入之后返回数据对应的column值
+
+      * transaction:
+        http://knexjs.org/#Transactions
+        ! transacting — .transacting(transactionObj)
+
+      * .first
+        knex.table('users').first('id', 'name').then(function(row) { console.log(row); });
+
+    Schema Builder:
+      * withSchema — knex.schema.withSchema([schemaName])
+        schema namely database name
+
+
+      * foreign key:
+        https://www.tutorialspoint.com/sql/sql-foreign-key.htm
+
+        knex.schema.table('users', function (table) {
+          table.integer('user_id').unsigned()
+          table.foreign('user_id').references('Items.user_id_in_items')
+        })
+
+
+        user_id reference Items(user_id_in_items)
+
+
+    Utility:
+      Events - http://knexjs.org/#Interfaces-Events
+        这个需要注意下, 编写的时候可能需要想log对应位置的信息
+
+      toSQL - http://knexjs.org/#Interfaces-Other
+        这个也是, 测试自己写的sql
+
+
+    Migration: ?
+      http://knexjs.org/#Migrations
+
+  ### BOOKSHELF.JS
+
+    Plugins: ?
+
+    Doc 文档:
+      doc文档http://bookshelfjs.org/#section-Bookshelf， 从bookshelf开始, 列举了Model, Collection, 两大主要
+      class. Model 下面又细分了construction, Members, methods, events.
+
+    Model: ?
+      单条db数据
+
+      methods:
+        .forge() // create a new model.
+
+        .fetch({withRelated}) : ?
+          :withRelated: <string|Object|mixed[]> - fetch related data.
+
+
+      examples:
+          return this.forge() // create a new model
+            .query('where', 'token', '=', token) //where
+            .fetch(options) // do select
+            .then(function then(model) {
+                return model.destroy(options); //delete related rows
+            });
+
+    Collection: ?
+      多条db数据.
+
+      methods:
+        .forge() // create a new collection
+
+
+
+
+
+
+
+
+
 
 
 # This Project
@@ -94,13 +235,13 @@
     │   ├── importer
     │   │   ├── handlers
     │   │   └── importers
-    │   ├── meta
+    │   ├── meta                          # Microdata type of schema.org,
     │   ├── migration
     │   │   └── fixtures
-    │   ├── schema
-    │   │   └── clients
+    │   ├── schema                        # create databases, database infos.
+    │   │   └── clients                   # encapsulate logic for manipulating mysql, sqlite, post PostgreSql
     │   ├── slack
-    │   ├── validation
+    │   ├── validation                    # validation, utility module for checking schema & settings sanity.
     │   └── xml
     │       ├── rss
     │       └── sitemap
@@ -116,13 +257,13 @@
     │   └── validation
     ├── models
     │   ├── base
-    │   └── plugins
+    │   └── plugins                       # modify/extend Bookshelf model to mixin some behaviours
     ├── permissions
-    ├── routes
+    ├── routes                            # express routes, admin, front & api
     ├── scheduling                        # scheduling for some url request (service endpoints)
     │   └── post-scheduling
-    ├── storage
-    ├── translations
+    ├── storage                           # control how UGC(user generated content) get stored
+    ├── translations                      # i18n
     ├── utils
     └── views
 
@@ -144,7 +285,7 @@
 
   ## project dependencies
 
-    * bookshelf: orm mapping lib
+    * bookshelf: Bookshelf is a JavaScript ORM for Node.js, built on the Knex SQL query builder.
     * unidecode: ASCII transliterations of Unicode text
 
       >unidecode("に間違いがないか、再度確認してください。再読み込みしてください。");
@@ -174,7 +315,8 @@
     * nodemailer - util for sending email
     * html-to-text - https://github.com/werk85/node-html-to-text， 将html 转成文本会保留大部分格式
     * ! validator - https://github.com/chriso/validator.js, validate text & other kinds of things.
-
+    * node-uuid, javascript to generate uuids
+    * ghost-gql - https://github.com/TryGhost/GQL,
 
 
 
@@ -194,11 +336,62 @@
     的时候移除了http header中的敏感信息
 
 
+  ## db management:
+    ### versioning:
+      core/server/data/schema/versioning.js
+
+      这个模块提供了处理的db migration的自动化的方式
+        <db version x.x folder>
+          ../migration/            # 自动化migration脚本
+          ../migration/fixtures/   # 验证migration 是否成功？
+
+
+  ## working with bookshelf:
+
+    ### extends bookshelf:
+      * under core/server/models/plugins folder, this project extended bookshelf using 2 techniques
+
+        * directly extend bookshelf's prototype:
+          _.extend(bookshelf.Model.prototype, {})
+
+        * take a Bookshelf instance, modifiy its Model attribute
+
+            function (Bookshelf) {
+                var modelProto = Bookshelf.Model.prototype,
+
+                Model = Bookshelf.Model.extend({
+                  //injected methods
+                })
+
+                Bookshelf.Model = Model;
+            }
+
+      * under core/server/models/base folder, this project create a BaseModel, then using BaseModel.extend
+        to further extend its behavior
+
+        base/token.js:
+          Basetoken = ghostBookshelf.Model.extend({})
+
+        accesstoken.js:
+          Accesstoken = Basetoken.extend({})
+
+    ### notes:
+      * security with bookshelf: @./models/base
+        ? filterOptions, filterData
+
+
+
+  ## token creation techniques
+    * create invite token - core/server/models/invite.js
+      formula:
+        email_token = base64(email|expire_timestamp|sha256(email+expire_timestamp))
+      the way it works, it can decode base64, get these 3 tokens back, and validate email+expire_timestamp
+      integrity against that sha256.
 
 
 
 
-  ## notes:
+  ## notes: ? sort by importance or add importance flag.
     * 301 redirect add one year cache.
       res.set({'Cache-Control': 'public, max-age=' + utils.ONE_YEAR_S});
       res.redirect(301, path);
@@ -218,8 +411,19 @@
     * Bearer token : `Authorization: Bearer AbCdEf123456`
     * ! core/server/auth/* 这个模块需要重点看下, 用户验证授权, oauth2 使用和实现, password模块的整合。
     * core/server/helpers/* 这个模块需要先看下handlebars的helpers的概念和语法, 现在就大致略过一遍就好
+    * core/server/data/schema - 不得不说js的sql orm框架要比java的简洁直观好多, 相比hibernate来说太好用了
+      * clients/mysql , js@checkPostTable方法的transaction很特别
+    * core/server/model/user  -
+      * bcrypt user 创建流程
+      * generateResetToken: 生成reset token 算法, // BASE64(TIMESTAMP + email + HASH(TIMESTAMP + email + oldPasswordHash + dbHash ))
+      * @validateToken
+        * heigh efficient way of compare chars: ,
+          diff = diff bitor (a.charCodeAt xor b.charCodeAt), xor: only 1^0 = 1
+          diff |= token.charCodeAt(i) ^ generatedToken.charCodeAt(i);
+        * the way of prevent brutal force attack on reset password token.
 
-
+    * every schema in this project(exclude many-to-many, one-to-many mapping table) has a uuid field.
+      why this is created please see database notes.
 
 
 # others:
@@ -232,13 +436,16 @@
       * Preflighted requests: 先发一个试探性的请求看第三方服务是否允许跨域
       * Requests with credentials: 带cookie的第三方服务调用
 
+# terms:
+
+  slug - url链接最后的可阅读的文本部分 see @ http://www.wpbeginner.com/glossary/post-slug/
 
 
 
 # Links:
 * [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS)
 * ! [an-introduction-to-oauth-2](https://www.digitalocean.com/community/tutorials/an-introduction-to-oauth-2)
-
+* [mysql data types](https://www.tutorialspoint.com/mysql/mysql-data-types.htm)
 
 
 
@@ -256,6 +463,13 @@ todo:
     core/server/views/user-error.hbs 文件中的asset 指令是哪来的
       server/helpers
 
+    dabase:
+      see docker mysql image
+      why database schema has a uuid field
+        http://stackoverflow.com/questions/45399/advantages-and-disadvantages-of-guid-uuid-database-keys
+
+    env = process.env.NODE_ENV || 'development'; 这个是如何应用的
+      >  NODE_ENV=production sample.js --foo bar
 
   pending:
     gulpfile vs Gruntfile
@@ -269,8 +483,6 @@ todo:
     clear todos in this project
     https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS
     familiar with fs-extra: https://github.com/jprichardson/node-fs-extra
-    env = process.env.NODE_ENV || 'development'; 这个是如何应用的
-      >  NODE_ENV=production sample.js --foo bar
     git submodule
     整理下这个项目的代码到github blog上， 应用的模式呀 等等， 这个放到最后处理
     orm mapping - bookshelf
@@ -279,9 +491,18 @@ todo:
     https://github.com/CrazyFork/passport-oauth2
     nodejs util module
     bunyan 在项目中如何创建logger的
-
     https://github.com/CrazyFork/oauth2orize - 这个源码等着读了
-
     把todo中的rxjs视频教程清了, 以后所有的Promise都替换成RxJS？
     authenicate 中的逻辑需要好好看下, authenticate user/client 的区别是什么？需要画脑图？
     core/server/auth/passport.js 这个需要重新看下到时候
+    db升级和orm冲突如何解决
+    core/server/data/schema/
+      default-settings.json 中的validations搞什么的
+    be familiar with knex API
+      withSchema, as,
+    mysql date datetype
+    timezone 的用法
+    权限校验是怎么设计的
+    how the `core/server/events` module is used
+    bookshelf model.attributes
+    how validation is used & why

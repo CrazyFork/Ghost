@@ -1,3 +1,6 @@
+/*
+Basetoken, common db ops for tokens
+*/
 var Promise         = require('bluebird'),
     ghostBookshelf  = require('./index'),
     errors          = require('../../errors'),

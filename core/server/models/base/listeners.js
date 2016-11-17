@@ -52,7 +52,7 @@ events.on('settings.activeTimezone.edited', function (settingModel) {
                      *   - so we update published_at to 7PM - 480minutes === 11AM UTC
                      *   - 11AM UTC === 7PM +08:00
                      */
-                    if (newPublishedAtMoment.isBefore(moment().add(5, 'minutes'))) {
+                    if (newPublishedAtMoment.isBefore(moment().add(5, 'minutes'))) {//:todo:
                         post.set('status', 'draft');
                     } else {
                         post.set('published_at', newPublishedAtMoment.toDate());

@@ -61,7 +61,7 @@ Role = ghostBookshelf.Model.extend({
             });
         }
 
-        if (action === 'assign' && loadedPermissions.user) {
+        if (action === 'assign' && loadedPermissions.user) {// map roles to target groups
             if (_.some(loadedPermissions.user.roles, {name: 'Owner'})) {
                 checkAgainst = ['Owner', 'Administrator', 'Editor', 'Author'];
             } else if (_.some(loadedPermissions.user.roles, {name: 'Administrator'})) {

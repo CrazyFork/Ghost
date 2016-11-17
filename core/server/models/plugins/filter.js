@@ -1,6 +1,7 @@
+//todo:没看很懂
 var _      = require('lodash'),
     errors = require('../../errors'),
-    gql    = require('ghost-gql'),
+    gql    = require('ghost-gql'),// https://github.com/TryGhost/GQL
     i18n   = require('../../i18n'),
     filter,
     filterUtils;

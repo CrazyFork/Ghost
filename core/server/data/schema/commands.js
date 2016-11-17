@@ -1,3 +1,6 @@
+/*
+this module wraps up .clients & .schema, contains some utilities methods to manipulate databases
+*/
 var _       = require('lodash'),
     Promise = require('bluebird'),
     i18n    = require('../../i18n'),
@@ -11,6 +14,7 @@ function addTableColumn(tableName, table, columnName) {
 
     // creation distinguishes between text with fieldtype, string with maxlength and all others
     if (columnSpec.type === 'text' && columnSpec.hasOwnProperty('fieldtype')) {
+        // http://knexjs.org/#Schema-text, table.text(columnName, columnSpec.fieldtype)
         column = table[columnSpec.type](columnName, columnSpec.fieldtype);
     } else if (columnSpec.type === 'string' && columnSpec.hasOwnProperty('maxlength')) {
         column = table[columnSpec.type](columnName, columnSpec.maxlength);
@@ -79,10 +83,10 @@ function deleteTable(table, transaction) {
 }
 
 function getTables(transaction) {
-    var client = (transaction || db.knex).client.config.client;
+    var client = (transaction || db.knex).client.config.client;//:bm - get which database is using, eg. mysql
 
     if (_.includes(_.keys(clients), client)) {
-        return clients[client].getTables();
+        return clients[client].getTables();// clients is the module .clients
     }
 
     return Promise.reject(i18n.t('notices.data.utils.index.noSupportForDatabase', {client: client}));

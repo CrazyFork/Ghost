@@ -32,7 +32,7 @@ ghostBookshelf = bookshelf(db.knex);
 ghostBookshelf.plugin('registry');
 
 // Load the Ghost access rules plugin, which handles passing permissions/context through the model layer
-ghostBookshelf.plugin(plugins.accessRules);
+ghostBookshelf.plugin(plugins.accessRules);//todo: different plugins writing methods
 
 // Load the Ghost filter plugin, which handles applying a 'filter' to findPage requests
 ghostBookshelf.plugin(plugins.filter);
@@ -469,7 +469,7 @@ ghostBookshelf.Model = ghostBookshelf.Model.extend({
     generateSlug: function generateSlug(Model, base, options) {
         var slug,
             slugTryCount = 1,
-            baseName = Model.prototype.tableName.replace(/s$/, ''),
+            baseName = Model.prototype.tableName.replace(/s$/, ''),//remove trailing s
             // Look for a matching slug, append an incrementing number if so
             checkIfSlugExists, longSlug;
 
@@ -501,6 +501,7 @@ ghostBookshelf.Model = ghostBookshelf.Model.extend({
                     slugToFind += '-';
                 } else {
                     // Otherwise, trim the number off the end
+                    // trim the target slug by one length with each iteration until a slug is found
                     trimSpace = -(String(slugTryCount - 1).length);
                     slugToFind = slugToFind.slice(0, trimSpace);
                 }

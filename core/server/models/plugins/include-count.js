@@ -1,3 +1,6 @@
+/*
+inject counts ability to model.
+*/
 var _ = require('lodash');
 
 module.exports = function (Bookshelf) {

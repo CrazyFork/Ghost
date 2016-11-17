@@ -53,7 +53,7 @@ User = ghostBookshelf.Model.extend({
             }
         });
         this.on('updated', function onUpdated(model) {
-            model.statusChanging = model.get('status') !== model.updated('status');
+            model.statusChanging = model.get('status') !== model.updated('status');// :todo: where this updated come from
             model.isActive = _.includes(activeStates, model.get('status'));
 
             if (model.statusChanging) {
@@ -64,10 +64,11 @@ User = ghostBookshelf.Model.extend({
                 }
             }
 
-            model.emitChange('edited');
+            model.emitChange('edited'); //:todo: where this emitChange method came from
         });
+
         this.on('destroyed', function onDestroyed(model) {
-            if (_.includes(activeStates, model.previous('status'))) {
+            if (_.includes(activeStates, model.previous('status'))) {//todo: previouse
                 model.emitChange('deactivated');
             }
 
@@ -128,7 +129,7 @@ User = ghostBookshelf.Model.extend({
         }
     },
 
-    toJSON: function toJSON(options) {
+    toJSON: function toJSON(options) {//:bm: serialize user, remove sensitive data out
         options = options || {};
 
         var attrs = ghostBookshelf.Model.prototype.toJSON.call(this, options);
@@ -386,7 +387,7 @@ User = ghostBookshelf.Model.extend({
         }
 
         roles = data.roles || getAuthorRole();
-        delete data.roles;
+        delete data.roles;// :todo: why delete here?
 
         return generatePasswordHash(userData.password).then(function then(hash) {
             // Assign the hashed password
@@ -447,6 +448,7 @@ User = ghostBookshelf.Model.extend({
         });
     },
 
+    // can do or not, reject if not, else resolve
     permissible: function permissible(userModelOrId, action, context, loadedPermissions, hasUserPermission, hasAppPermission) {
         var self = this,
             userModel = userModelOrId,
@@ -466,7 +468,7 @@ User = ghostBookshelf.Model.extend({
                 // Build up the original args but substitute with actual model
                 var newArgs = [foundUserModel].concat(origArgs);
 
-                return self.permissible.apply(self, newArgs);
+                return self.permissible.apply(self, newArgs);// :bm: recursive promise call
             });
         }
 
@@ -514,7 +516,7 @@ User = ghostBookshelf.Model.extend({
         return Promise.reject(new errors.NoPermissionError({message: i18n.t('errors.models.user.notEnoughPermission')}));
     },
 
-    setWarning: function setWarning(user, options) {
+    setWarning: function setWarning(user, options) {//increse warning level, lock if > 4
         var status = user.get('status'),
             regexp = /warn-(\d+)/i,
             level;
@@ -548,7 +550,7 @@ User = ghostBookshelf.Model.extend({
                 return bcryptCompare(object.password, user.get('password')).then(function then(matched) {
                     if (!matched) {
                         return Promise.resolve(self.setWarning(user, {validate: false})).then(function then(remaining) {
-                            if (remaining === 0) {
+                            if (remaining === 0) {// :todo: is this a good idea? what if user is logged maliciously by someone else? is this prevented by captcha?
                                 // If remaining attempts = 0, the account has been locked, so show a locked account message
                                 return Promise.reject(new errors.NoPermissionError({message: i18n.t('errors.models.user.accountLocked')}));
                             }
@@ -658,7 +660,7 @@ User = ghostBookshelf.Model.extend({
         });
     },
 
-    validateToken: function validateToken(token, dbHash) {
+    validateToken: function validateToken(token, dbHash) {// dbHash, user password hash.
         /*jslint bitwise:true*/
         // TODO: Is there a chance the use of ascii here will cause problems if oldPassword has weird characters?
         var tokenText = new Buffer(token, 'base64').toString('ascii'),
@@ -685,9 +687,10 @@ User = ghostBookshelf.Model.extend({
             return Promise.reject(new errors.ValidationError({message: i18n.t('errors.models.user.expiredToken')}));
         }
 
+        // :bm:
         // to prevent brute force attempts to reset the password the combination of email+expires is only allowed for
         // 10 attempts
-        if (tokenSecurity[email + '+' + expires] && tokenSecurity[email + '+' + expires].count >= 10) {
+        if (tokenSecurity[email + '+' + expires] && tokenSecurity[email + '+' + expires].count >= 10) {// :naive store of tokenSecurity but effective
             return Promise.reject(new errors.NoPermissionError({message: i18n.t('errors.models.user.tokenLocked')}));
         }
 
@@ -702,6 +705,8 @@ User = ghostBookshelf.Model.extend({
             }
 
             for (i = token.length - 1; i >= 0; i = i - 1) {
+                // :bm:
+                // high efficient way to compare chars, diff = diff bitor (a.charCodeAt xor b.charCodeAt), xor: only 1^0 = 1
                 diff |= token.charCodeAt(i) ^ generatedToken.charCodeAt(i);
             }
 
