@@ -1,5 +1,12 @@
-// canThis(someUser).edit.posts([id]|[[ids]])
-// canThis(someUser).edit.post(somePost|somePostId)
+/**
+ * usage:
+ *  canThis(someUser).edit.posts([id]|[[ids]])
+ *  canThis(someUser).edit.post(somePost|somePostId)
+ *
+ *  canThis(someUser) returns a CanThisResult instance
+ *      .edit returns a buildObjectTypeHandlers map
+ *      .post get buildObjectTypeHandlers map property value, returns a function (model|model_id)=>Promise<()>
+ */
 
 var _                   = require('lodash'),
     Promise             = require('bluebird'),
@@ -117,6 +124,18 @@ CanThisResult = function () {
     return;
 };
 
+/**
+ * @param objTypes: array of ['post', 'tag', 'user', 'page']
+ * @param actType: one of [edit, create, edit]
+ * @param context: {} result of parseContext
+ * @param permissionLoad: Promise[{user: [Permission model], app: [Permission model]}]
+ *      all the permissions this current user has
+ *
+ * @return {
+ *          objType: (model|model_id) => Promise[()]
+ *          }
+ *
+ */
 CanThisResult.prototype.buildObjectTypeHandlers = function (objTypes, actType, context, permissionLoad) {
     var objectTypeModelMap = {
         post:       Models.Post,
@@ -192,13 +211,14 @@ CanThisResult.prototype.buildObjectTypeHandlers = function (objTypes, actType, c
                 }
 
                 // Offer a chance for the TargetModel to override the results
+                // TargetModel: one of model defined inside objectTypeModelMap variable
                 if (TargetModel && _.isFunction(TargetModel.permissible)) {
                     return TargetModel.permissible(
                         modelId, actType, context, loadedPermissions, hasUserPermission, hasAppPermission
                     );
                 }
 
-                if (hasUserPermission && hasAppPermission) {
+                if (hasUserPermission && hasAppPermission) {//resolve
                     return;
                 }
 
@@ -273,7 +293,7 @@ canThis = function (context) {
     return result.beginCheck(context);
 };
 
-init = refresh = function (options) {
+init = refresh = function (options) {//assemble actionsMap here
     options = options || {};
 
     // Load all the permissions

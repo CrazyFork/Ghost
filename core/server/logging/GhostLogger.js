@@ -95,7 +95,7 @@ GhostLogger.prototype.setLoggers = function setLoggers() {
         }
     };
 };
-
+// ! set logger's stream
 GhostLogger.prototype.setStreams = function setStreams() {
     var self = this,
         streams = [],

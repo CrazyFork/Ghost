@@ -255,10 +255,10 @@
     ├── middleware
     │   ├── api
     │   └── validation
-    ├── models
-    │   ├── base
+    ├── models                            # define models that this application uses
+    │   ├── base                          # Bookshelf base model
     │   └── plugins                       # modify/extend Bookshelf model to mixin some behaviours
-    ├── permissions
+    ├── permissions                       # creates a utility to check user's permissions
     ├── routes                            # express routes, admin, front & api
     ├── scheduling                        # scheduling for some url request (service endpoints)
     │   └── post-scheduling
@@ -388,6 +388,10 @@
       the way it works, it can decode base64, get these 3 tokens back, and validate email+expire_timestamp
       integrity against that sha256.
 
+
+  ## permissions:
+    app 权限系统的设计具体看 /server/models/permission.js 简单说 permission 映射了User, App, Role.
+    user Many-To-Many 了 Role, 所以获取权限的时候会 merge 掉 User对应的权限和user的role对应的权限
 
 
 

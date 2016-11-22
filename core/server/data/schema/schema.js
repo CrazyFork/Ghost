@@ -75,7 +75,10 @@ module.exports = {
         id: {type: 'increments', nullable: false, primary: true},
         uuid: {type: 'string', maxlength: 36, nullable: false, validations: {isUUID: true}},
         name: {type: 'string', maxlength: 150, nullable: false},
+        // action target. eg. post, tag, user, page
         object_type: {type: 'string', maxlength: 150, nullable: false},
+        //edit, delete, create @see /permissions/index.js
+        // defines various actions one can make.
         action_type: {type: 'string', maxlength: 150, nullable: false},
         object_id: {type: 'integer', nullable: true},
         created_at: {type: 'dateTime', nullable: false},
