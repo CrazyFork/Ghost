@@ -1,0 +1,131 @@
+# database:
+  * [mysql data types](https://www.tutorialspoint.com/mysql/mysql-data-types.htm)
+
+  ## SQL:
+    * outerJoin innerJoin leftOuterJoin fullJoin ...
+      http://stackoverflow.com/questions/448023/what-is-the-difference-between-left-right-outer-and-inner-joins
+      full join:
+        The SQL FULL JOIN combines the results of both left and right outer joins.
+        https://www.tutorialspoint.com/sql/sql-full-joins.htm
+
+    * mysql default join:
+      http://stackoverflow.com/questions/4418776/what-is-the-default-mysql-join-behaviour-inner-or-outer
+      In MySQL writing JOIN unqualified implies INNER JOIN.
+
+    * with rollup:
+      http://blog.sqlauthority.com/2010/02/24/sql-server-introduction-to-rollup-clause/
+      简单说就是根据3个字段的group by, 会在不同的条件有个总计的一类数据计算出来, 程序应该不会这么用, mysql console 这么用估计还有可能
+
+    * union vs union all:
+      union 会根据内容去重, union all 不会
+      http://stackoverflow.com/questions/49925/what-is-the-difference-between-union-and-union-all
+
+    * select for update / share mode:
+      http://dev.mysql.com/doc/refman/5.7/en/innodb-locking-reads.html
+      the diff between `for update` and `share mode` is,
+        * `for update` do a exclusive lock on read
+        * `share mode` on the other hand, share read (you cant modify it).
+
+    * character set & collation
+      http://stackoverflow.com/questions/341273/what-does-character-set-and-collation-mean-exactly
+      * character set - using which encoding
+      * collation -  how to sort characters
+
+    * SQL default:
+      http://www.w3schools.com/Sql/sql_default.asp
+      mysql default - see books
+        insert into `coords` (`x`, `y`) values (20, DEFAULT), (DEFAULT, 30), (10, 20)
+
+    * where exists:
+      https://www.techonthenet.com/sql/exists.php
+      >The subquery is a SELECT statement. If the subquery returns at least one record in its result set,
+      the EXISTS clause will evaluate to true and the EXISTS condition will be met. If the subquery
+      does not return any records, the EXISTS clause will evaluate to false and the EXISTS condition will
+      not be met.
+
+    * prefer to store only GMT/UTC timestamp to database:
+      https://www.periscopedata.com/blog/better-sql-schema.html
+
+    * create schema with uuid is good for replicate data, generally it's good idea to include a
+      uuid in your database.
+      http://stackoverflow.com/questions/45399/advantages-and-disadvantages-of-guid-uuid-database-keys
+
+  ### knex
+    Query Builder:
+      * returning — .returning(column) / .returning([column1, column2, ...])
+        插入之后返回数据对应的column值
+
+      * transaction:
+        http://knexjs.org/#Transactions
+        ! transacting — .transacting(transactionObj)
+
+      * .first
+        knex.table('users').first('id', 'name').then(function(row) { console.log(row); });
+
+    Schema Builder:
+      * withSchema — knex.schema.withSchema([schemaName])
+        schema namely database name
+
+
+      * foreign key:
+        https://www.tutorialspoint.com/sql/sql-foreign-key.htm
+
+        knex.schema.table('users', function (table) {
+          table.integer('user_id').unsigned()
+          table.foreign('user_id').references('Items.user_id_in_items')
+        })
+
+
+        user_id reference Items(user_id_in_items)
+
+
+    Utility:
+      Events - http://knexjs.org/#Interfaces-Events
+        这个需要注意下, 编写的时候可能需要想log对应位置的信息
+
+      toSQL - http://knexjs.org/#Interfaces-Other
+        这个也是, 测试自己写的sql
+
+
+    Migration: ?
+      http://knexjs.org/#Migrations
+
+  ### BOOKSHELF.JS
+
+    Plugins: ?
+
+    Doc 文档:
+      doc文档http://bookshelfjs.org/#section-Bookshelf， 从bookshelf开始, 列举了Model, Collection, 两大主要
+      class. Model 下面又细分了construction, Members, methods, events.
+
+    Model: ?
+      单条db数据
+
+      methods:
+        .forge() // create a new model.
+
+        .fetch({withRelated}) : ?
+          :withRelated: <string|Object|mixed[]> - fetch related data.
+
+
+      examples:
+          return this.forge() // create a new model
+            .query('where', 'token', '=', token) //where
+            .fetch(options) // do select
+            .then(function then(model) {
+                return model.destroy(options); //delete related rows
+            });
+
+    Collection: ?
+      多条db数据.
+
+      methods:
+        .forge() // create a new collection
+
+
+
+
+
+
+
+

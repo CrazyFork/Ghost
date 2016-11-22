@@ -1,0 +1,46 @@
+# Notes
+
+  * access system env variables:
+    system env variables are good place to place custom config database password or other dynamic injected values
+
+
+    >printenv
+    or
+    >process.env
+
+
+  * node spawn vs exec:
+    http://www.hacksparrow.com/difference-between-spawn-and-exec-of-node-js-child_process.html
+
+    spawn 返回的是流, 是完全异步的, 你可以 on('data', on('end,
+    exec 则是同步的, 会返回一个buffer, 缓存child_process返回的结果, 这个buffer的max size是200kb
+
+
+  * crypto usage:
+
+    // we can use crypto to create md5 on front-end project.
+    return (crypto.createHash('md5').update(packageInfo.version + Date.now()).digest('hex')).substring(0, 10);
+
+
+  * handle http request, add request timeout, and cancel request:
+
+  @core/server/utils/image-size-from-url.js
+
+  * nodejs i18n(国际化):
+    Intl.js and Node: https://www.npmjs.com/package/intl
+      Node.js 0.12 has the Intl APIs built-in, but only includes the English locale data by default.
+      If your app needs to support more locales than English, you'll need to get Node to load the
+      extra locale data, or use intl npm package to patch the runtime with the Intl polyfill.
+
+
+  * nodejs dirs:
+
+    __dirname 当前文件的目录
+    process.cwd() nodejs进程启动的目录 node xx.js 的目录
+    path.join(os.tmpdir(), utils.uid(10)) // create a temp dir
+
+  * dynamically load external module using `require`:
+
+    require(path.join(relPath, version))
+
+  *

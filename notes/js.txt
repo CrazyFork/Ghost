@@ -1,0 +1,5 @@
+
+# Notes
+
+  Snippets:
+    path = path.replace(/\.([^\.]*)$/, '.min.$1');

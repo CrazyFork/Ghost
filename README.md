@@ -1,6 +1,6 @@
 # Notice 
 请注意这个项目的默认分支是我阅读的分支, 正常请到origin repo master分支去
-所有的笔记在 todo.txt others.txt 文件中
+所有的笔记在 todo.txt others.txt, notes 中
 
 
 
