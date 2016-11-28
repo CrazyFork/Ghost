@@ -144,6 +144,9 @@ Settings = ghostBookshelf.Model.extend({
         });
     },
 
+    // if key not found in `server/data/schema/default-settings.json` rejected.
+    // else get setting from db, if found return else save default setting for this key from json file to
+    // database, return saved data
     populateDefault: function (key) {
         if (!getDefaultSettings()[key]) {
             return Promise.reject(new errors.NotFoundError({message: i18n.t('errors.models.settings.unableToFindDefaultSetting', {key: key})}));

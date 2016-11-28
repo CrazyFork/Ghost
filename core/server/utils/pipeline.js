@@ -6,8 +6,12 @@
  */
 var Promise = require('bluebird');
 
-//:todo - how this module is used
-function pipeline(tasks /* initial arguments */) {//:todo - tasks is in nodejs Global?
+/**
+ * run functions of promise result in a pipeline
+ *  task: Array[List[()=>Promise[any]]]
+ *  initial arguments: value | Promise[any]
+ */
+function pipeline(tasks /*, initial arguments */) {
     var args = Array.prototype.slice.call(arguments, 1),
 
         runTask = function (task, args) {

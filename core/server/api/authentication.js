@@ -76,14 +76,14 @@ function setupTasks(setupData) {
         var context = {context: {internal: true}},
             User = models.User;
 
-        return User.findOne({role: 'Owner', status: 'all'}).then(function then(owner) {
+        return User.findOne({role: 'Owner', status: 'all'}).then(function then(owner) {//:todo: user vs owner?
             if (!owner) {
                 throw new errors.GhostError({
                     message: i18n.t('errors.api.authentication.setupUnableToRun')
                 });
             }
 
-            return User.setup(userData, _.extend({id: owner.id}, context));
+            return User.setup(userData, _.extend({id: owner.id}, context));// edit password
         }).then(function then(user) {
             return {
                 user: user,
@@ -191,7 +191,7 @@ authentication = {
                 var dbHash = response.settings[0].value,
                     expiresAt = Date.now() + globalUtils.ONE_DAY_MS;
 
-                return models.User.generateResetToken(email, expiresAt, dbHash);
+                return models.User.generateResetToken(email, expiresAt, dbHash);//todo: dbHash ?
             }).then(function then(resetToken) {
                 return {
                     email: email,
@@ -268,7 +268,7 @@ authentication = {
                 ne2Password = data.ne2Password;
 
             return settings.read(settingsQuery).then(function then(response) {
-                return models.User.resetPassword({
+                return models.User.resetPassword({//todo: why reset user's password have to include dbHash.
                     token: resetToken,
                     newPassword: newPassword,
                     ne2Password: ne2Password,
@@ -420,6 +420,7 @@ authentication = {
 
     /**
      * Checks the setup status
+     * whether database has any user.
      * @return {Promise}
      */
     isSetup: function isSetup() {
@@ -490,7 +491,7 @@ authentication = {
                         };
 
                     apiMail.send(payload, {context: {internal: true}}).catch(function (error) {
-                        logging.error(new errors.EmailError({
+                        logging.error(new errors.EmailError({//:bm:error
                             err: error,
                             context: i18n.t('errors.api.authentication.unableToSendWelcomeEmail'),
                             help: i18n.t('errors.api.authentication.checkEmailConfigInstructions', {url: 'http://support.ghost.org/mail/'})
@@ -582,7 +583,7 @@ authentication = {
             function destroyToken(provider, options, providers) {
                 return provider.destroyByToken(options)
                     .return(response)
-                    .catch(provider.NotFoundError, function () {
+                    .catch(provider.NotFoundError, function () {// bluebird catch syntax. not standard
                         if (!providers.length) {
                             return {
                                 token: tokenDetails.token,

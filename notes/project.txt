@@ -180,12 +180,16 @@
 
 
 
-  ## token creation techniques
+  ## tokens
+    creation techniques:
     * create invite token - core/server/models/invite.js
       formula:
         email_token = base64(email|expire_timestamp|sha256(email+expire_timestamp))
       the way it works, it can decode base64, get these 3 tokens back, and validate email+expire_timestamp
       integrity against that sha256.
+
+    token validations:
+    * /server/api/authentication.js: this file includes the centeral apis for tokens.
 
 
   ## permissions:

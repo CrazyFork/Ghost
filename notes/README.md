@@ -9,6 +9,7 @@ instead of .md
 
   # inside src code:
   :bm                   #bookmark
+  :bm:<tag>             # eg. :bm:error
   :todo | :todo:
   :                     # comment by myself
 
