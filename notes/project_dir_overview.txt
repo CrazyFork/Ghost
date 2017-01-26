@@ -1,0 +1,65 @@
+# current dir
+
+    ├── content
+    │   ├── apps
+    │   ├── data
+    │   ├── images                              # by default, images will be uploaded here.
+    │   └── themes
+    │       └── casper
+    ├── core
+    │   ├── client
+    │   ├── server
+    │   ├── shared
+    │   └── test
+    │       ├── functional
+    │       │   ├── module
+    │       │   └── routes
+    │       │       └── api
+    │       ├── integration
+    │       │   ├── api
+    │       │   └── model
+    │       │       └── base
+    │       ├── unit
+    │       │   ├── api
+    │       │   ├── auth
+    │       │   ├── controllers
+    │       │   │   └── frontend
+    │       │   ├── mail
+    │       │   ├── metadata
+    │       │   ├── middleware
+    │       │   │   └── api
+    │       │   ├── models
+    │       │   │   └── base
+    │       │   ├── models_plugins
+    │       │   ├── scheduling
+    │       │   │   └── post-scheduling
+    │       │   ├── server_helpers
+    │       │   │   └── test_tpl
+    │       │   ├── sitemap
+    │       │   ├── storage
+    │       │   └── utils
+    │       └── utils
+    │           ├── fixtures
+    │           │   ├── app
+    │           │   │   └── nested
+    │           │   ├── csv
+    │           │   ├── export
+    │           │   ├── filter-param
+    │           │   ├── images
+    │           │   ├── import
+    │           │   │   └── zips
+    │           │   │       ├── zip-image-dir
+    │           │   │       │   └── images
+    │           │   │       ├── zip-old-roon-export
+    │           │   │       │   └── Roon-Export
+    │           │   │       │       └── published
+    │           │   │       ├── zip-with-base-dir
+    │           │   │       │   └── basedir
+    │           │   │       ├── zip-with-double-base-dir
+    │           │   │       │   └── basedir
+    │           │   │       │       └── basedir
+    │           │   │       └── zip-without-base-dir
+    │           │   ├── theme
+    │           │   │   └── partials
+    │           │   └── themes
+    │           └── mocks

@@ -12,6 +12,7 @@ instead of .md
   :bm:<tag>             # eg. :bm:error
   :todo | :todo:
   :                     # comment by myself
+  :skip                 # unread code, normally it's because complex, & app domain logic, hence value for tech reason
 
   # this doc
   !             #high value

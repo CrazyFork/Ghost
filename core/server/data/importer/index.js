@@ -1,3 +1,7 @@
+/*
+utility module for import data from file.
+importFromFile is the entry method
+*/
 var _            = require('lodash'),
     Promise      = require('bluebird'),
     sequence     = require('../../utils/sequence'),
@@ -69,7 +73,7 @@ _.extend(ImportManager.prototype, {
     /**
      * Convert items into a glob string
      * @param {String[]} items
-     * @returns {String}
+     * @returns {String}, like, (| pattern_a | pattern_b | pattern_c)
      */
     getGlobPattern: function (items) {
         return '+(' + _.reduce(items, function (memo, ext) {
@@ -138,6 +142,7 @@ _.extend(ImportManager.prototype, {
      */
     isValidZip: function (directory) {
         // Globs match content in the root or inside a single directory
+        // glob.sync, return: {Array<String>} filenames found matching the pattern
         var extMatchesBase = glob.sync(
                 this.getExtensionGlob(this.getExtensions(), ROOT_OR_SINGLE_DIR), {cwd: directory}
             ),
@@ -175,6 +180,8 @@ _.extend(ImportManager.prototype, {
         var tmpDir = path.join(os.tmpdir(), uuid.v4());
         this.filesToDelete.push(tmpDir);
         return Promise.promisify(extract)(filePath, {dir: tmpDir}).then(function () {
+            // according to https://www.npmjs.com/package/extract-zip-fork doc, the error inside this function
+            // has not be properly handled
             return tmpDir;
         });
     },
@@ -244,6 +251,7 @@ _.extend(ImportManager.prototype, {
                     }));
                 }
 
+                // get all the files this handler can process, return List[{name, path}]
                 var files = self.getFilesFromZip(handler, zipDirectory);
 
                 if (files.length > 0) {

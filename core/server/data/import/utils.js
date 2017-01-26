@@ -19,6 +19,7 @@ updatedSettingKeys = {
 areEmpty = function (object) {
     var fields = _.toArray(arguments).slice(1),
         areEmpty = _.every(fields, function (field) {
+            //:bm: 西八，这用法好烦人, object is the first arguments, this func is able to recieve more than one arguments
             return _.isEmpty(object[field]);
         });
 
@@ -37,7 +38,7 @@ stripProperties = function stripProperties(properties, data) {
 
 utils = {
     internal: internal,
-
+    // :skip
     processUsers: function preProcessUsers(tableData, owner, existingUsers, objs) {
         // We need to:
         // 1. figure out who the owner of the blog is
@@ -106,7 +107,7 @@ utils = {
 
         return tableData;
     },
-
+    // :skip
     preProcessPostTags: function preProcessPostTags(tableData) {
         var postTags,
             postsWithTags = {};
@@ -139,7 +140,7 @@ utils = {
 
         return tableData;
     },
-
+    // :skip: complex, & app domain logic, hence value for tech reason
     preProcessRolesUsers: function preProcessRolesUsers(tableData, owner, roles) {
         var validRoles = _.map(roles, 'name');
         if (!tableData.roles || !tableData.roles.length) {
@@ -199,7 +200,7 @@ utils = {
             if (areEmpty(tag, 'name', 'slug')) {
                 return;
             }
-
+            // :if tag not found, insert
             ops.push(models.Tag.findOne({name: tag.name}, {transacting: transaction}).then(function (_tag) {
                 if (!_tag) {
                     return models.Tag.add(tag, _.extend({}, internal, {transacting: transaction}))
@@ -209,7 +210,7 @@ utils = {
                 }
 
                 return _tag;
-            }).reflect());
+            }).reflect());//:todo: ?
         });
 
         return Promise.all(ops);

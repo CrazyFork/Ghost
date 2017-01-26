@@ -1,5 +1,6 @@
 /*
 this module wraps up .clients & .schema, contains some utilities methods to manipulate databases
+the operations in this file manipulate table & database not business data.
 */
 var _       = require('lodash'),
     Promise = require('bluebird'),

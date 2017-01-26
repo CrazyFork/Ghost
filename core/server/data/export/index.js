@@ -1,3 +1,6 @@
+/*
+export database data out, load all data into memory to variable exportData
+*/
 var _ = require('lodash'),
     Promise = require('bluebird'),
     db = require('../../data/db'),
@@ -65,6 +68,7 @@ doExport = function doExport() {
             },
             data: {
                 // Filled below
+                // (tableName, tableData)
             }
         };
 

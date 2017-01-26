@@ -79,3 +79,5 @@ todo:
     how the `core/server/events` module is used
     bookshelf model.attributes
     how validation is used & why
+    server/data/schema/default-settings.json 干啥的
+    error 如何处理的 new errors.ValidationError({message: i18n.t('errors.api.authentication.noEmailProvided')})

@@ -25,6 +25,7 @@ ImageHandler = {
             var noBaseDir = file.name.replace(baseDirRegex, ''),
                 noGhostDirs = noBaseDir;
 
+            // remove any path segment that equals to imageRelPath
             _.each(imageFolderRegexes, function (regex) {
                 noGhostDirs = noGhostDirs.replace(regex, '');
             });

@@ -67,7 +67,7 @@ DataImporter.prototype.doUserImport = function (t, tableData, owner, users, erro
 
             // If adding the users fails,
             if (errors.length > 0) {
-                t.rollback(errors);
+                t.rollback(errors);//:todo: should it rejects
             } else {
                 return imported;
             }
@@ -92,7 +92,7 @@ DataImporter.prototype.doImport = function (data) {
             owner = result.owner;
             users = result.all;
 
-            return models.Base.transaction(function (t) {
+            return models.Base.transaction(function (t) {//:bm: create a transaction out of Base model
                 // Step 1: Attempt to handle adding new users
                 self.doUserImport(t, tableData, owner, users, errors, roles).then(function (result) {
                     var importResults = [];
@@ -140,7 +140,7 @@ DataImporter.prototype.doImport = function (data) {
                             }
                         });
 
-                        if (errors.length === 0) {
+                        if (errors.length === 0) { //:bm: handle transaction result
                             t.commit();
                         } else {
                             t.rollback(errors);

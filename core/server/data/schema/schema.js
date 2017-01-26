@@ -101,6 +101,11 @@ module.exports = {
         app_id: {type: 'integer', nullable: false},
         permission_id: {type: 'integer', nullable: false}
     },
+    /*
+    various settings for, include:
+        * key = databaseVersion, value like 3.3；database version.
+
+    */
     settings: {
         id: {type: 'increments', nullable: false, primary: true},
         uuid: {type: 'string', maxlength: 36, nullable: false, validations: {isUUID: true}},
@@ -178,10 +183,10 @@ module.exports = {
         name: {type: 'string', maxlength: 150, nullable: false, unique: true},
         slug: {type: 'string', maxlength: 150, nullable: false, unique: true},
         secret: {type: 'string', maxlength: 150, nullable: false},
-        redirection_uri: {type: 'string', maxlength: 2000, nullable: true},
+        redirection_uri: {type: 'string', maxlength: 2000, nullable: true},// redirection_uri when authenticated successfully
         logo: {type: 'string', maxlength: 2000, nullable: true},
         status: {type: 'string', maxlength: 150, nullable: false, defaultTo: 'development'},
-        type: {type: 'string', maxlength: 150, nullable: false, defaultTo: 'ua', validations: {isIn: [['ua', 'web', 'native']]}},
+        type: {type: 'string', maxlength: 150, nullable: false, defaultTo: 'ua', validations: {isIn: [['ua', 'web', 'native']]}},// :todo: ua, native means?
         description: {type: 'string', maxlength: 200, nullable: true},
         created_at: {type: 'dateTime', nullable: false},
         created_by: {type: 'integer', nullable: false},

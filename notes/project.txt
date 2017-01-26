@@ -5,7 +5,7 @@
   * admin:
   * casper: 主题引擎
 
-  ## Directories:
+  ## core server Directories:
     ├── api
     ├── apps
     │   ├── amp
@@ -29,9 +29,9 @@
     │   └── frontend
     ├── data
     │   ├── db
-    │   ├── export
-    │   ├── import
-    │   ├── importer
+    │   ├── export                        # utility module for exports all tables data inside project database
+    │   ├── import                        # internal modules that import db data that exported by data/export module.
+    │   ├── importer                      # import db data (use data/import module)
     │   │   ├── handlers
     │   │   └── importers
     │   ├── meta                          # Microdata type of schema.org,
@@ -116,6 +116,8 @@
     * ! validator - https://github.com/chriso/validator.js, validate text & other kinds of things.
     * node-uuid, javascript to generate uuids
     * ghost-gql - https://github.com/TryGhost/GQL,
+    * extract-zip-fork - https://www.npmjs.com/package/extract-zip-fork, for extract zip file.
+    * glob - https://github.com/isaacs/node-glob,
 
 
 
@@ -176,8 +178,11 @@
 
     ### notes:
       * security with bookshelf: @./models/base
+        * permittedOptions method in file - `server/models/client.js`
         ? filterOptions, filterData
 
+      * transaction with bookshelf:
+        server/data/import/data-importer.js @doImport method
 
 
   ## tokens
@@ -231,4 +236,5 @@
 
     * every schema in this project(exclude many-to-many, one-to-many mapping table) has a uuid field.
       why this is created please see database notes.
-
+    * `(new Date()).toJSON()` is same as `(new Date()).toISOString()` which return '2016-11-29T11:02:29.658Z'
+    * create a temp dir to unzip things `var tmpDir = path.join(os.tmpdir(), uuid.v4());`
