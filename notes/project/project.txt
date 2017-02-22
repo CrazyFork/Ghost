@@ -43,7 +43,7 @@
     │   ├── validation                    # validation, utility module for checking schema & settings sanity.
     │   └── xml
     │       ├── rss
-    │       └── sitemap
+    │       └── sitemap                   # create sitemap.xml, skiped.
     ├── events                            # a EventEmiter helper class
     ├── helpers                           # handlebars helpers, for me, provides no values to read this, i use no server-side rendering, or with another lib to do this (eg. reactjs)
     │   └── tpl                           # handlebars templates, gernate pagination etc...
@@ -51,9 +51,9 @@
     ├── mail                              # send email
     │   └── templates
     │       └── raw
-    ├── middleware
+    ├── middleware                        # all kinds of middlewares
     │   ├── api
-    │   └── validation
+    │   └── validation                    # request validation, for now there's only file uploader validation.
     ├── models                            # define models that this application uses
     │   ├── base                          # Bookshelf base model
     │   └── plugins                       # modify/extend Bookshelf model to mixin some behaviours
@@ -106,6 +106,8 @@
         https://github.com/jaredhanson/passport-oauth2
 
       * passport-ghost: 这个项目的自定义passport strategy实现
+      * oauth2
+        * passport-oauth2-client-password: 用于 oauth 资源提供站验证 资源请求站的 client_id 和 client_secret
 
     * prettyjson: 格式化json格式, 转换成类似yaml格式的
     * bunyan: nodejs logger
@@ -118,15 +120,18 @@
     * ghost-gql - https://github.com/TryGhost/GQL,
     * extract-zip-fork - https://www.npmjs.com/package/extract-zip-fork, for extract zip file.
     * glob - https://github.com/isaacs/node-glob,
-
-
+    * netjet - https://www.npmjs.com/package/netjet , automatically insert preload link on response.
+    * connect-slashes - https://github.com/avinoamr/connect-slashes, append `/` in your url.
 
 
 
   ## Passport:
 
     ! coer/server/auth/* passport的使用 & 实现oauth:
-      * auth-strategies.js - 定义了不同的strategy, 参数从哪传入的？
+        https://github.com/inter-action/koa2_nodejs_boilerplate
+            看这个工程的文档页面有描述
+
+      * auth-strategies.js
       * authenticate.js - 定义了不同的express设计权限校验的中间件(middleware)
         //oauth2-client-password 这里将 auth-strategies.js 定义的键值对进行了转换
         return passport.authenticate(['oauth2-client-password'], {session: false, failWithError: false},
@@ -147,42 +152,6 @@
           ../migration/fixtures/   # 验证migration 是否成功？
 
 
-  ## working with bookshelf:
-
-    ### extends bookshelf:
-      * under core/server/models/plugins folder, this project extended bookshelf using 2 techniques
-
-        * directly extend bookshelf's prototype:
-          _.extend(bookshelf.Model.prototype, {})
-
-        * take a Bookshelf instance, modifiy its Model attribute
-
-            function (Bookshelf) {
-                var modelProto = Bookshelf.Model.prototype,
-
-                Model = Bookshelf.Model.extend({
-                  //injected methods
-                })
-
-                Bookshelf.Model = Model;
-            }
-
-      * under core/server/models/base folder, this project create a BaseModel, then using BaseModel.extend
-        to further extend its behavior
-
-        base/token.js:
-          Basetoken = ghostBookshelf.Model.extend({})
-
-        accesstoken.js:
-          Accesstoken = Basetoken.extend({})
-
-    ### notes:
-      * security with bookshelf: @./models/base
-        * permittedOptions method in file - `server/models/client.js`
-        ? filterOptions, filterData
-
-      * transaction with bookshelf:
-        server/data/import/data-importer.js @doImport method
 
 
   ## tokens
@@ -202,6 +171,7 @@
     user Many-To-Many 了 Role, 所以获取权限的时候会 merge 掉 User对应的权限和user的role对应的权限
 
 
+  ##
 
   ## notes: ? sort by importance or add importance flag.
     * 301 redirect add one year cache.
@@ -238,3 +208,9 @@
       why this is created please see database notes.
     * `(new Date()).toJSON()` is same as `(new Date()).toISOString()` which return '2016-11-29T11:02:29.658Z'
     * create a temp dir to unzip things `var tmpDir = path.join(os.tmpdir(), uuid.v4());`
+    * `core/server/middleware/index.js` 这个文件配置了所有的app的middleware，注意这里边动态生成了另外一个admin的express
+      server
+    * `server/middleware/spam-prevention.js`, 这个文件的prevent spam的方式
+    * `server/middleware/api/version-match.js`, api 在header中验证 api的 version
+
+

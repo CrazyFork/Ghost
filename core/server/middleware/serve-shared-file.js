@@ -6,7 +6,7 @@ var crypto = require('crypto'),
 
 // ### ServeSharedFile Middleware
 // Handles requests to robots.txt and favicon.ico (and caches them)
-function serveSharedFile(file, type, maxAge) {
+function serveSharedFile(file, type, maxAge) { //bm: md5的etag感觉完全没有被用到
     var content,
         corePath = config.get('paths').corePath,
         filePath,

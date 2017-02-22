@@ -5,6 +5,9 @@
 // App: Admin|Blog|API
 //
 // Helpers to handle spam detection on signin, forgot password, and protected pages.
+// 这个方式的实现，要比我认为的hashmap的方式可能还高效一些，牺牲内存主要是这种方式节省了cpu运算，主观感觉上
+// 但这种方式的问题就是只能控制单一node进程，如果能用nginx进行精细控制就好了，当然也可以将访问记录存储的redis中
+// 也不失为一种方式
 
 var _ = require('lodash'),
     errors    = require('../errors'),
@@ -34,7 +37,7 @@ spamPrevention = {
         }
 
         // filter entries that are older than rateSigninPeriod
-        loginSecurity = _.filter(loginSecurity, function filter(logTime) {
+        loginSecurity = _.filter(loginSecurity, function filter(logTime) { //:bm: this is where loginSecurity got reset.
             return (logTime.time + rateSigninPeriod > currentTime);
         });
 

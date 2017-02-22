@@ -11,6 +11,7 @@ instead of .md
   :bm                   #bookmark
   :bm:<tag>             # eg. :bm:error
   :todo | :todo:
+  :done                 # done with todo
   :                     # comment by myself
   :skip                 # unread code, normally it's because complex, & app domain logic, hence value for tech reason
 

@@ -1,0 +1,8 @@
+links:
+* oauth 2 tutorial with passport:
+    * http://mherman.org/blog/2015/09/26/social-authentication-in-node-dot-js-with-passport/
+    * https://github.com/CrazyFork/passport-github
+
+* https://developer.github.com/v3/oauth/
+*
+

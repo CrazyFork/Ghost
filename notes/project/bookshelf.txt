@@ -1,0 +1,48 @@
+
+
+    // 这个应该是启用了 bookshelf reference plugin 的功能
+    return ghostBookshelf.model('Role').findOne({id: roleId});
+
+
+    return addedUser.roles().attach(roles, options);
+    // user has many roles, collection.attach(roles: ids[], options: {}),
+    // attach roles to user.
+
+
+
+### extends bookshelf:
+    * under core/server/models/plugins folder, this project extended bookshelf using 2 techniques
+
+    * directly extend bookshelf's prototype:
+        _.extend(bookshelf.Model.prototype, {})
+
+    * take a Bookshelf instance, modifiy its Model attribute
+
+        function (Bookshelf) {
+            var modelProto = Bookshelf.Model.prototype,
+
+            Model = Bookshelf.Model.extend({
+                //injected methods
+            })
+
+            Bookshelf.Model = Model;
+        }
+
+    * under core/server/models/base folder, this project create a BaseModel, then using BaseModel.extend
+    to further extend its behavior
+
+    base/token.js:
+        Basetoken = ghostBookshelf.Model.extend({})
+
+    accesstoken.js:
+        Accesstoken = Basetoken.extend({})
+
+### notes:
+    * security with bookshelf: @./models/base
+    * permittedOptions method in file - `server/models/client.js`
+    ? filterOptions, filterData
+
+    * transaction with bookshelf:
+    server/data/import/data-importer.js @doImport method
+
+    * 敏感字段过滤, `core/server/models/base/index.js` 这个文件中 filterData 和 permittedAttributes。

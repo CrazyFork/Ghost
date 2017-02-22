@@ -19,8 +19,8 @@ strategies = {
      * HTTP Basic scheme to authenticate (not implemented yet).
      * Use of the client password strategy is implemented to support ember-simple-auth.
      */
-    clientPasswordStrategy: function clientPasswordStrategy(clientId, clientSecret, done) {
-        return models.Client.findOne({slug: clientId}, {withRelated: ['trustedDomains']})//:todo - withRelated?
+    clientPasswordStrategy: function clientPasswordStrategy(clientId, clientSecret, done) {//用于验证oauth的client的
+        return models.Client.findOne({slug: clientId}, {withRelated: ['trustedDomains']})
             .then(function then(model) {
                 if (model) {
                     var client = model.toJSON({include: ['trustedDomains']});
@@ -40,7 +40,7 @@ strategies = {
      * application, which is issued an access token to make requests on behalf of
      * the authorizing user.
      */
-    bearerStrategy: function bearerStrategy(accessToken, done) {
+    bearerStrategy: function bearerStrategy(accessToken, done) { // 用于验证用户的
         return models.Accesstoken.findOne({token: accessToken})
             .then(function then(model) {
                 if (model) {
@@ -51,10 +51,10 @@ strategies = {
                                 if (model) {
                                     var user = model.toJSON(),
                                         info = {scope: '*'};
-                                    return done(null, {id: user.id}, info);//:todo - what info does?
+                                    return done(null, {id: user.id}, info);
                                 }
                                 return done(null, false);
-                            });
+                            });// todo: 没有catch这个地方， 也许是个bug
                     } else {
                         return done(null, false);
                     }
@@ -67,6 +67,8 @@ strategies = {
     /**
      * Ghost Strategy
      * ghostAuthRefreshToken: will be null for now, because we don't need it right now
+     * 这个strategy貌似没有做什么验证 access_token 没有用到过，只是保存了对应的access_token在user中。
+     * 估计是组合着用的
      *
      * CASES:
      * - via invite token
@@ -75,11 +77,12 @@ strategies = {
      *
      * @TODO: validate GhostAuth profile?
      */
-    ghostStrategy: function ghostStrategy(req, ghostAuthAccessToken, ghostAuthRefreshToken, profile, done) {//:todo - what the heck is this
+    ghostStrategy: function ghostStrategy(req, ghostAuthAccessToken, ghostAuthRefreshToken, profile, done) {
         var inviteToken = req.body.inviteToken,
             options = {context: {internal: true}},
             handleInviteToken, handleSetup;
 
+        // 处理 invite 过来的用户
         handleInviteToken = function handleInviteToken() {// create a new user with invited token
             var user, invite;
             inviteToken = utils.decodeBase64URLsafe(inviteToken);
@@ -96,11 +99,11 @@ strategies = {
                         throw new errors.NotFoundError({message: i18n.t('errors.api.invites.inviteExpired')});
                     }
 
-                    return models.User.add({
+                    return models.User.add({ // :done [add, edit 这些方法哪来的], User model中定义的
                         email: profile.email_address,
                         name: profile.email_address,
                         password: utils.uid(50),
-                        roles: invite.toJSON().roles//:todo - what this does?
+                        roles: invite.toJSON().roles
                     }, options);
                 })
                 .then(function destroyInvite(_user) {

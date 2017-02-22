@@ -5,6 +5,7 @@ var express = require('express'),
     apiRoutes;
 
 apiRoutes = function apiRoutes(middleware) {
+    // difference with public auth & private auth
     var router = express.Router(),
         // Authentication for public endpoints
         authenticatePublic = [
@@ -113,7 +114,7 @@ apiRoutes = function apiRoutes(middleware) {
     router.post('/themes/upload',
         authenticatePrivate,
         middleware.upload.single('theme'),
-        middleware.validation.upload({type: 'themes'}),
+        middleware.validation.upload({type: 'themes'}),//todo:
         api.http(api.themes.upload)
     );
 

@@ -429,7 +429,7 @@ ghostBookshelf.Model = ghostBookshelf.Model.extend({
      * @param {Object} options (optional)
      * @return {Promise(ghostBookshelf.Model)} Newly Added Model
      */
-    add: function add(data, options) {
+    add: function add(data, options) {//todo:
         data = this.filterData(data);
         options = this.filterOptions(options, 'add');
         var model = this.forge(data);

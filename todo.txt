@@ -44,6 +44,22 @@ todo:
     env = process.env.NODE_ENV || 'development'; 这个是如何应用的
       >  NODE_ENV=production sample.js --foo bar
 
+    Etag creation:
+      ETag: '"' + crypto.createHash('md5').update(buf, 'utf8').digest('hex') + '"',
+
+      https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/http-caching
+
+    blogApp.enable('trust proxy');
+      https://expressjs.com/en/guide/behind-proxies.html
+      启用之后，注意这里的默认值的意思
+
+    sitemap.xsl, robots.txt
+      https://en.wikipedia.org/wiki/Sitemaps
+      觉得没啥用呀，除了能让crawler发现没有关联的节点外
+
+    error 如何处理的 new errors.ValidationError({message: i18n.t('errors.api.authentication.noEmailProvided')})
+    why uuid field no unique contraint: 由于uuid基本就不可能重复， 毕竟比彗星撞地球的概率都低，所以没有做unique限制吧
+
   pending:
     gulpfile vs Gruntfile
     what is site map
@@ -64,6 +80,8 @@ todo:
     https://github.com/CrazyFork/passport-oauth2
     nodejs util module
     bunyan 在项目中如何创建logger的
+      /core/server/logging
+
     https://github.com/CrazyFork/oauth2orize - 这个源码等着读了
     把todo中的rxjs视频教程清了, 以后所有的Promise都替换成RxJS？
     authenicate 中的逻辑需要好好看下, authenticate user/client 的区别是什么？需要画脑图？
@@ -71,6 +89,8 @@ todo:
     db升级和orm冲突如何解决
     core/server/data/schema/
       default-settings.json 中的validations搞什么的
+      schema 中的reference字段是如何被使用的
+      server/data/schema/default-settings.json 干啥的
     be familiar with knex API
       withSchema, as,
     mysql date datetype
@@ -79,5 +99,29 @@ todo:
     how the `core/server/events` module is used
     bookshelf model.attributes
     how validation is used & why
-    server/data/schema/default-settings.json 干啥的
-    error 如何处理的 new errors.ValidationError({message: i18n.t('errors.api.authentication.noEmailProvided')})
+
+    /Users/interaction/workspace/nodejs/Ghost/core/server/data/db/connection.js
+      这里的配置是什么意思
+
+    core/server/middleware/index.js
+      中的upload是怎么处理的
+        multer
+        加一个fileupload的sanity checker
+        tempdir
+
+    slack/test
+    how api routes is configed.
+
+
+
+
+
+
+
+reading stack:
+/Users/interaction/workspace/nodejs/Ghost/core/server/routes
+/Users/interaction/workspace/nodejs/Ghost/core/server/routes/api.js
+
+/Users/interaction/workspace/nodejs/Ghost/core/server/auth/oauth.js
+/Users/interaction/workspace/nodejs/Ghost/core/server/auth/passport.js
+

@@ -1,7 +1,7 @@
 /*
 这个模块从3种方式验证用户登录权限
 
-:todo - authenticateUser vs authenticateClient 的区别?
+这个文件和auth-strategies.js的区别在于什么？一个是express middleware， 一个是passport的strategy么
 */
 var passport = require('passport'),
     errors = require('../errors'),
@@ -34,6 +34,7 @@ function isBearerAutorizationHeader(req) {// Authorization: Bearer AbCdEf123456
 
 authenticate = {
     // ### Authenticate Client Middleware
+    //用于oauth2验证资源请求者的身份. 如果有bearer header 就skip掉验证
     authenticateClient: function authenticateClient(req, res, next) {
         // skip client authentication if bearer token is present
         if (isBearerAutorizationHeader(req)) {
@@ -76,16 +77,18 @@ authenticate = {
 
                 req.client = client;
 
-                events.emit('client.authenticated', client);//:todo - why use event emiter here?
+                //:done - why use event emiter here?
+                // 搜了下代码并没有其他地方用到，怀疑没有什么用
+                events.emit('client.authenticated', client);
                 return next(null, client);
             }
         )(req, res, next);
     },
 
     // ### Authenticate User Middleware
+    // 通过 bearer token 验证用户信息, 如果是 oauth2 client request 则 bypass 掉
     authenticateUser: function authenticateUser(req, res, next) {
-        //:todo - `{session: false, failWithError: false}` what this options is ?
-        // is this options related to passport project ?
+        //session, 不在session中记录用户登录状态, failWithError: true 未验证通过会抛出一个 error
         return passport.authenticate('bearer', {session: false, failWithError: false},
             function authenticate(err, user, info) {
                 if (err) {
@@ -97,12 +100,12 @@ authenticate = {
                     req.user = user;
 
                     events.emit('user.authenticated', user);
-                    return next(null, user, info);
+                    return next(null, user, info);//todo: 这个信息传递到哪里去了？ 以参数的形式传递到下一个middleware中了？
                 } else if (isBearerAutorizationHeader(req)) {
                     return next(new errors.UnauthorizedError({
                         message: i18n.t('errors.middleware.auth.accessDenied')
                     }));
-                } else if (req.client) {//:todo - why this?
+                } else if (req.client) {// oauth2 client request falls through
                     req.user = {id: 0};
                     return next();
                 }

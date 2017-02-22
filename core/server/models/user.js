@@ -387,7 +387,7 @@ User = ghostBookshelf.Model.extend({
         }
 
         roles = data.roles || getAuthorRole();
-        delete data.roles;// :todo: why delete here?
+        delete data.roles;// :done: why delete here? user table 不需要这个字段所以删了
 
         return generatePasswordHash(userData.password).then(function then(hash) {
             // Assign the hashed password
@@ -412,7 +412,7 @@ User = ghostBookshelf.Model.extend({
                     }
                 });
 
-                return addedUser.roles().attach(roles, options);
+                return addedUser.roles().attach(roles, options);// bookshelf Collection#attach 方法
             });
         }).then(function then() {
             // find and return the added user

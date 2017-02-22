@@ -1,3 +1,4 @@
+// render error to the request maker, format with json or html
 var _ = require('lodash'),
     path = require('path'),
     hbs = require('express-hbs'),

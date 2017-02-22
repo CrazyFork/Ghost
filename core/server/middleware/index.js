@@ -37,11 +37,11 @@ var debug           = require('debug')('ghost:middleware'),
     setupMiddleware;
 
 middleware = {
-    upload: multer({dest: tmpdir()}),
+    upload: multer({dest: tmpdir()}),//:todo:
     validation: validation,
     cacheControl: cacheControl,
     spamPrevention: spamPrevention,
-    api: {
+    api: {// api 特有的middleware
         errorHandler: errorHandler,
         cors: cors,
         labs: labs,
@@ -197,7 +197,7 @@ setupMiddleware = function setupMiddleware(blogApp) {
 
     // ### Routing
     // Set up API routes
-    blogApp.use(routes.apiBaseUri, routes.api(middleware));
+    blogApp.use(routes.apiBaseUri, routes.api(middleware));//:todo:
 
     // Mount admin express app to /ghost and set up routes
     adminApp.use(redirectToSetup);
